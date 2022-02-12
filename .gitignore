@@ -5,3 +5,5 @@ nohup.out
 *.conf
 *.properties
 package-lock.json
+logs/
+.htaccess
