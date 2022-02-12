@@ -1,0 +1,1372 @@
+ _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [04:39:30.240][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(132:1)[0m[04:39:30.721][32m  CORE: [37mConnecting to SQL database [35m(33:5)[0m[04:39:30.722][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(140:3)[0m[04:39:30.727][32m  CORE: [37mStarted Websocket server [35m(142:3)[0m[04:39:38.634][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[04:39:38.652][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[04:39:38.653][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[04:39:38.654][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "???",
+        "actImage": "???"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[04:39:56.638][31m ERROR: [37mCould not end connection cleanly [35m(352:9)[0m[04:39:57.375][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[04:39:57.376][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[04:39:57.376][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[04:39:57.377][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "???",
+        "actImage": "???"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [04:43:50.053][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(132:1)[0m[04:43:50.098][32m  CORE: [37mConnecting to SQL database [35m(33:5)[0m[04:43:50.098][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(140:3)[0m[04:43:50.103][32m  CORE: [37mStarted Websocket server [35m(142:3)[0m[04:44:02.076][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[04:44:02.086][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[04:44:02.088][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[04:44:02.088][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "???",
+        "actImage": "???"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [04:44:47.950][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(132:1)[0m[04:44:47.991][32m  CORE: [37mConnecting to SQL database [35m(33:5)[0m[04:44:47.991][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(140:3)[0m[04:44:47.995][32m  CORE: [37mStarted Websocket server [35m(142:3)[0m[04:44:49.295][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[04:44:49.306][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[04:44:49.307][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[04:44:49.308][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "???",
+        "actImage": "???"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[04:44:53.136][31m ERROR: [37mCould not end connection cleanly [35m(362:9)[0m[04:44:53.846][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[04:44:53.847][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[04:44:53.848][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[04:44:53.849][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "???",
+        "actImage": "???"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [04:50:14.243][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(132:1)[0m[04:50:14.281][32m  CORE: [37mConnecting to SQL database [35m(33:5)[0m[04:50:14.282][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(140:3)[0m[04:50:14.286][32m  CORE: [37mStarted Websocket server [35m(142:3)[0m[04:50:17.349][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[04:50:17.361][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[04:50:17.363][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[04:50:17.364][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "???",
+        "actImage": "???"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [04:52:07.407][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(132:1)[0m[04:52:07.446][32m  CORE: [37mConnecting to SQL database [35m(33:5)[0m[04:52:07.446][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(140:3)[0m[04:52:07.450][32m  CORE: [37mStarted Websocket server [35m(142:3)[0m[04:52:26.587][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[04:52:26.597][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[04:52:26.598][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[04:52:26.599][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[04:52:42.970][32m  CORE: [37mReturn data: {
+    "fieldCount": 0,
+    "affectedRows": 1,
+    "insertId": 0,
+    "serverStatus": 2,
+    "warningCount": 0,
+    "message": "(Rows matched: 1  Changed: 1  Warnings: 0",
+    "protocol41": [32mtrue[37m,
+    "changedRows": 1
+} [35m(onn.update.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:313:17)[0m[04:52:42.970][32m  CORE: [37mConnecting to SQL database [35m(33:5)[0m[04:52:42.971][32m  CORE: [37mConnecting to SQL database [35m(33:5)[0m[04:52:42.974][32m  CORE: [37mClosing connection to SQL database [35m(91:7)[0m[04:52:42.975][32m  CORE: [37m{
+    "from": "sam@chilton.tv",
+    "to": "test@test.com",
+    "subject": "UniVision Vote confirmation",
+    "text": "Please click https://univision.show/voteConfirmation/?code=20220208115242113519645114172708521120 to confirm your vote.",
+    "html": "Please click <a href='https://univision.show/voteConfirmation/?code=20220208115242113519645114172708521120'>Verify</a> to confirm your vote."
+} [35m(417:5)[0m[04:52:42.976][32m  CORE: [37mClosing connection to SQL database [35m(91:7)[0m[04:53:12.393][31m ERROR: [37mCould not end connection cleanly [35m(362:9)[0m[04:53:17.116][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[04:53:17.117][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[04:53:17.118][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[04:53:17.119][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[04:53:17.169][36m DEBUG: [37mClient asking for admin command [35m(191:13)[0m[04:53:17.170][36m DEBUG: [37mSending votes to admin [35m(203:19)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [04:56:26.466][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(132:1)[0m[04:56:26.512][32m  CORE: [37mConnecting to SQL database [35m(33:5)[0m[04:56:26.512][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(140:3)[0m[04:56:26.516][32m  CORE: [37mStarted Websocket server [35m(142:3)[0m[04:56:33.587][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[04:56:33.600][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[04:56:33.602][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[04:56:33.603][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[04:56:33.805][36m DEBUG: [37mClient asking for admin command [35m(191:13)[0m[04:56:33.807][36m DEBUG: [37mSending votes to admin [35m(203:19)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [05:06:20.470][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(132:1)[0m[05:06:20.521][32m  CORE: [37mConnecting to SQL database [35m(33:5)[0m[05:06:20.521][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(140:3)[0m[05:06:20.525][32m  CORE: [37mStarted Websocket server [35m(142:3)[0m[05:06:50.909][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[05:06:50.926][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[05:06:50.928][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[05:06:50.929][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[05:06:51.023][36m DEBUG: [37mClient asking for admin command [35m(191:13)[0m[05:06:51.024][36m DEBUG: [37mSending votes to admin [35m(203:19)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [05:08:30.402][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(132:1)[0m[05:08:30.443][32m  CORE: [37mConnecting to SQL database [35m(33:5)[0m[05:08:30.443][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(140:3)[0m[05:08:30.447][32m  CORE: [37mStarted Websocket server [35m(142:3)[0m[05:08:34.960][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[05:08:34.971][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[05:08:34.973][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[05:08:34.974][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    },
+    {
+        "PK": 3,
+        "uniLongName": "University of Southampton",
+        "uniShortName": "Southampton",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Southampton.png",
+        "uniEmail": "@soton.ac.uk",
+        "actName": "Joseph Futter",
+        "actImage": "https://univision.show/wp-content/uploads/2021/04/167791161_280535850178058_4438313001389478444_n.jpg"
+    },
+    {
+        "PK": 4,
+        "uniLongName": "Academy of Contemporary Music",
+        "uniShortName": "ACM",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/ACM.png",
+        "uniEmail": "@acm.ac.uk",
+        "actName": "Alys",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/WEBSITE-SHOT-scaled.jpg"
+    },
+    {
+        "PK": 5,
+        "uniLongName": "University for the Creative Arts",
+        "uniShortName": "UCA",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/UCA.png",
+        "uniEmail": "@students.uca.ac.uk",
+        "actName": "The Vegas Rats",
+        "actImage": "https://univision.show/wp-content/uploads/2021/02/IMG_0210-2-1-scaled.jpg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[05:08:35.059][36m DEBUG: [37mClient asking for admin command [35m(191:13)[0m[05:08:35.061][36m DEBUG: [37mSending votes to admin [35m(203:19)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [05:09:39.968][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(132:1)[0m[05:09:40.007][32m  CORE: [37mConnecting to SQL database [35m(33:5)[0m[05:09:40.008][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(140:3)[0m[05:09:40.012][32m  CORE: [37mStarted Websocket server [35m(142:3)[0m[05:09:41.817][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[05:09:41.836][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[05:09:41.838][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[05:09:41.839][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    },
+    {
+        "PK": 3,
+        "uniLongName": "University of Southampton",
+        "uniShortName": "Southampton",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Southampton.png",
+        "uniEmail": "@soton.ac.uk",
+        "actName": "Joseph Futter",
+        "actImage": "https://univision.show/wp-content/uploads/2021/04/167791161_280535850178058_4438313001389478444_n.jpg"
+    },
+    {
+        "PK": 4,
+        "uniLongName": "Academy of Contemporary Music",
+        "uniShortName": "ACM",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/ACM.png",
+        "uniEmail": "@acm.ac.uk",
+        "actName": "Alys",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/WEBSITE-SHOT-scaled.jpg"
+    },
+    {
+        "PK": 5,
+        "uniLongName": "University for the Creative Arts",
+        "uniShortName": "UCA",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/UCA.png",
+        "uniEmail": "@students.uca.ac.uk",
+        "actName": "The Vegas Rats",
+        "actImage": "https://univision.show/wp-content/uploads/2021/02/IMG_0210-2-1-scaled.jpg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[05:09:41.867][36m DEBUG: [37mClient asking for admin command [35m(191:13)[0m[05:09:41.868][36m DEBUG: [37mSending votes to admin [35m(203:19)[0m[05:09:44.151][31m ERROR: [37mCould not end connection cleanly [35m(362:9)[0m[05:09:44.768][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[05:09:44.769][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[05:09:44.770][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[05:09:44.770][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    },
+    {
+        "PK": 3,
+        "uniLongName": "University of Southampton",
+        "uniShortName": "Southampton",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Southampton.png",
+        "uniEmail": "@soton.ac.uk",
+        "actName": "Joseph Futter",
+        "actImage": "https://univision.show/wp-content/uploads/2021/04/167791161_280535850178058_4438313001389478444_n.jpg"
+    },
+    {
+        "PK": 4,
+        "uniLongName": "Academy of Contemporary Music",
+        "uniShortName": "ACM",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/ACM.png",
+        "uniEmail": "@acm.ac.uk",
+        "actName": "Alys",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/WEBSITE-SHOT-scaled.jpg"
+    },
+    {
+        "PK": 5,
+        "uniLongName": "University for the Creative Arts",
+        "uniShortName": "UCA",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/UCA.png",
+        "uniEmail": "@students.uca.ac.uk",
+        "actName": "The Vegas Rats",
+        "actImage": "https://univision.show/wp-content/uploads/2021/02/IMG_0210-2-1-scaled.jpg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[05:09:44.833][36m DEBUG: [37mClient asking for admin command [35m(191:13)[0m[05:09:44.834][36m DEBUG: [37mSending votes to admin [35m(203:19)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [05:10:33.962][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(132:1)[0m[05:10:34.006][32m  CORE: [37mConnecting to SQL database [35m(33:5)[0m[05:10:34.006][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(140:3)[0m[05:10:34.010][32m  CORE: [37mStarted Websocket server [35m(142:3)[0m[05:10:35.520][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[05:10:35.531][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[05:10:35.533][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[05:10:35.534][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    },
+    {
+        "PK": 3,
+        "uniLongName": "University of Southampton",
+        "uniShortName": "Southampton",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Southampton.png",
+        "uniEmail": "@soton.ac.uk",
+        "actName": "Joseph Futter",
+        "actImage": "https://univision.show/wp-content/uploads/2021/04/167791161_280535850178058_4438313001389478444_n.jpg"
+    },
+    {
+        "PK": 4,
+        "uniLongName": "Academy of Contemporary Music",
+        "uniShortName": "ACM",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/ACM.png",
+        "uniEmail": "@acm.ac.uk",
+        "actName": "Alys",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/WEBSITE-SHOT-scaled.jpg"
+    },
+    {
+        "PK": 5,
+        "uniLongName": "University for the Creative Arts",
+        "uniShortName": "UCA",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/UCA.png",
+        "uniEmail": "@students.uca.ac.uk",
+        "actName": "The Vegas Rats",
+        "actImage": "https://univision.show/wp-content/uploads/2021/02/IMG_0210-2-1-scaled.jpg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[05:10:35.609][36m DEBUG: [37mClient asking for admin command [35m(191:13)[0m[05:10:35.610][36m DEBUG: [37mSending votes to admin [35m(203:19)[0m[05:10:39.616][31m ERROR: [37mCould not end connection cleanly [35m(362:9)[0m[05:10:40.259][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[05:10:40.260][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[05:10:40.260][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[05:10:40.261][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    },
+    {
+        "PK": 3,
+        "uniLongName": "University of Southampton",
+        "uniShortName": "Southampton",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Southampton.png",
+        "uniEmail": "@soton.ac.uk",
+        "actName": "Joseph Futter",
+        "actImage": "https://univision.show/wp-content/uploads/2021/04/167791161_280535850178058_4438313001389478444_n.jpg"
+    },
+    {
+        "PK": 4,
+        "uniLongName": "Academy of Contemporary Music",
+        "uniShortName": "ACM",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/ACM.png",
+        "uniEmail": "@acm.ac.uk",
+        "actName": "Alys",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/WEBSITE-SHOT-scaled.jpg"
+    },
+    {
+        "PK": 5,
+        "uniLongName": "University for the Creative Arts",
+        "uniShortName": "UCA",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/UCA.png",
+        "uniEmail": "@students.uca.ac.uk",
+        "actName": "The Vegas Rats",
+        "actImage": "https://univision.show/wp-content/uploads/2021/02/IMG_0210-2-1-scaled.jpg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[05:10:40.313][36m DEBUG: [37mClient asking for admin command [35m(191:13)[0m[05:10:40.314][36m DEBUG: [37mSending votes to admin [35m(203:19)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [08:55:30.268][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(132:1)[0m[08:55:30.479][32m  CORE: [37mConnecting to SQL database [35m(33:5)[0m[08:55:30.479][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(140:3)[0m[08:55:30.486][32m  CORE: [37mStarted Websocket server [35m(142:3)[0m[08:55:34.477][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[08:55:34.505][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[08:55:34.507][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[08:55:34.509][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    },
+    {
+        "PK": 3,
+        "uniLongName": "University of Southampton",
+        "uniShortName": "Southampton",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Southampton.png",
+        "uniEmail": "@soton.ac.uk",
+        "actName": "Joseph Futter",
+        "actImage": "https://univision.show/wp-content/uploads/2021/04/167791161_280535850178058_4438313001389478444_n.jpg"
+    },
+    {
+        "PK": 4,
+        "uniLongName": "Academy of Contemporary Music",
+        "uniShortName": "ACM",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/ACM.png",
+        "uniEmail": "@acm.ac.uk",
+        "actName": "Alys",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/WEBSITE-SHOT-scaled.jpg"
+    },
+    {
+        "PK": 5,
+        "uniLongName": "University for the Creative Arts",
+        "uniShortName": "UCA",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/UCA.png",
+        "uniEmail": "@students.uca.ac.uk",
+        "actName": "The Vegas Rats",
+        "actImage": "https://univision.show/wp-content/uploads/2021/02/IMG_0210-2-1-scaled.jpg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[08:55:34.516][36m DEBUG: [37mClient asking for admin command [35m(191:13)[0m[08:55:34.519][36m DEBUG: [37mSending votes to admin [35m(203:19)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [09:01:47.602][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(132:1)[0m[09:01:48.825][32m  CORE: [37mConnecting to SQL database [35m(33:5)[0m[09:01:48.825][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(140:3)[0m[09:01:48.829][32m  CORE: [37mStarted Websocket server [35m(142:3)[0m[09:02:10.383][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[09:02:10.407][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[09:02:10.409][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[09:02:10.410][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    },
+    {
+        "PK": 3,
+        "uniLongName": "University of Southampton",
+        "uniShortName": "Southampton",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Southampton.png",
+        "uniEmail": "@soton.ac.uk",
+        "actName": "Joseph Futter",
+        "actImage": "https://univision.show/wp-content/uploads/2021/04/167791161_280535850178058_4438313001389478444_n.jpg"
+    },
+    {
+        "PK": 4,
+        "uniLongName": "Academy of Contemporary Music",
+        "uniShortName": "ACM",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/ACM.png",
+        "uniEmail": "@acm.ac.uk",
+        "actName": "Alys",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/WEBSITE-SHOT-scaled.jpg"
+    },
+    {
+        "PK": 5,
+        "uniLongName": "University for the Creative Arts",
+        "uniShortName": "UCA",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/UCA.png",
+        "uniEmail": "@students.uca.ac.uk",
+        "actName": "The Vegas Rats",
+        "actImage": "https://univision.show/wp-content/uploads/2021/02/IMG_0210-2-1-scaled.jpg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[09:02:10.460][36m DEBUG: [37mClient asking for admin command [35m(191:13)[0m[09:02:10.461][36m DEBUG: [37mSending votes to admin [35m(203:19)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [09:53:32.630][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(132:1)[0m[09:53:33.042][32m  CORE: [37mConnecting to SQL database [35m(33:5)[0m[09:53:33.042][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(140:3)[0m[09:53:33.047][32m  CORE: [37mStarted Websocket server [35m(142:3)[0m[09:55:43.619][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[09:55:43.657][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[09:55:43.659][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[09:55:43.661][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    },
+    {
+        "PK": 3,
+        "uniLongName": "University of Southampton",
+        "uniShortName": "Southampton",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Southampton.png",
+        "uniEmail": "@soton.ac.uk",
+        "actName": "Joseph Futter",
+        "actImage": "https://univision.show/wp-content/uploads/2021/04/167791161_280535850178058_4438313001389478444_n.jpg"
+    },
+    {
+        "PK": 4,
+        "uniLongName": "Academy of Contemporary Music",
+        "uniShortName": "ACM",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/ACM.png",
+        "uniEmail": "@acm.ac.uk",
+        "actName": "Alys",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/WEBSITE-SHOT-scaled.jpg"
+    },
+    {
+        "PK": 5,
+        "uniLongName": "University for the Creative Arts",
+        "uniShortName": "UCA",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/UCA.png",
+        "uniEmail": "@students.uca.ac.uk",
+        "actName": "The Vegas Rats",
+        "actImage": "https://univision.show/wp-content/uploads/2021/02/IMG_0210-2-1-scaled.jpg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[09:55:43.683][36m DEBUG: [37mClient asking for admin command [35m(191:13)[0m[09:55:43.685][36m DEBUG: [37mSending votes to admin [35m(203:19)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [09:57:13.064][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(132:1)[0m[09:57:13.127][32m  CORE: [37mConnecting to SQL database [35m(33:5)[0m[09:57:13.127][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(140:3)[0m[09:57:13.132][32m  CORE: [37mStarted Websocket server [35m(142:3)[0m[09:57:14.375][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[09:57:14.386][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[09:57:14.388][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[09:57:14.389][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    },
+    {
+        "PK": 3,
+        "uniLongName": "University of Southampton",
+        "uniShortName": "Southampton",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Southampton.png",
+        "uniEmail": "@soton.ac.uk",
+        "actName": "Joseph Futter",
+        "actImage": "https://univision.show/wp-content/uploads/2021/04/167791161_280535850178058_4438313001389478444_n.jpg"
+    },
+    {
+        "PK": 4,
+        "uniLongName": "Academy of Contemporary Music",
+        "uniShortName": "ACM",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/ACM.png",
+        "uniEmail": "@acm.ac.uk",
+        "actName": "Alys",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/WEBSITE-SHOT-scaled.jpg"
+    },
+    {
+        "PK": 5,
+        "uniLongName": "University for the Creative Arts",
+        "uniShortName": "UCA",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/UCA.png",
+        "uniEmail": "@students.uca.ac.uk",
+        "actName": "The Vegas Rats",
+        "actImage": "https://univision.show/wp-content/uploads/2021/02/IMG_0210-2-1-scaled.jpg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[09:57:14.499][36m DEBUG: [37mClient asking for admin command [35m(191:13)[0m[09:57:14.500][36m DEBUG: [37mSending votes to admin [35m(203:19)[0m[09:57:56.185][31m ERROR: [37mCould not end connection cleanly [35m(362:9)[0m[09:57:56.456][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[09:57:56.457][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[09:57:56.457][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[09:57:56.458][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    },
+    {
+        "PK": 3,
+        "uniLongName": "University of Southampton",
+        "uniShortName": "Southampton",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Southampton.png",
+        "uniEmail": "@soton.ac.uk",
+        "actName": "Joseph Futter",
+        "actImage": "https://univision.show/wp-content/uploads/2021/04/167791161_280535850178058_4438313001389478444_n.jpg"
+    },
+    {
+        "PK": 4,
+        "uniLongName": "Academy of Contemporary Music",
+        "uniShortName": "ACM",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/ACM.png",
+        "uniEmail": "@acm.ac.uk",
+        "actName": "Alys",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/WEBSITE-SHOT-scaled.jpg"
+    },
+    {
+        "PK": 5,
+        "uniLongName": "University for the Creative Arts",
+        "uniShortName": "UCA",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/UCA.png",
+        "uniEmail": "@students.uca.ac.uk",
+        "actName": "The Vegas Rats",
+        "actImage": "https://univision.show/wp-content/uploads/2021/02/IMG_0210-2-1-scaled.jpg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[09:57:56.595][36m DEBUG: [37mClient asking for admin command [35m(191:13)[0m[09:57:56.596][36m DEBUG: [37mSending votes to admin [35m(203:19)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [10:02:29.590][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(132:1)[0m[10:02:29.642][32m  CORE: [37mConnecting to SQL database [35m(33:5)[0m[10:02:29.642][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(140:3)[0m[10:02:29.646][32m  CORE: [37mStarted Websocket server [35m(142:3)[0m[10:02:34.978][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[10:02:34.988][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[10:02:34.989][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[10:02:34.990][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    },
+    {
+        "PK": 3,
+        "uniLongName": "University of Southampton",
+        "uniShortName": "Southampton",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Southampton.png",
+        "uniEmail": "@soton.ac.uk",
+        "actName": "Joseph Futter",
+        "actImage": "https://univision.show/wp-content/uploads/2021/04/167791161_280535850178058_4438313001389478444_n.jpg"
+    },
+    {
+        "PK": 4,
+        "uniLongName": "Academy of Contemporary Music",
+        "uniShortName": "ACM",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/ACM.png",
+        "uniEmail": "@acm.ac.uk",
+        "actName": "Alys",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/WEBSITE-SHOT-scaled.jpg"
+    },
+    {
+        "PK": 5,
+        "uniLongName": "University for the Creative Arts",
+        "uniShortName": "UCA",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/UCA.png",
+        "uniEmail": "@students.uca.ac.uk",
+        "actName": "The Vegas Rats",
+        "actImage": "https://univision.show/wp-content/uploads/2021/02/IMG_0210-2-1-scaled.jpg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[10:02:35.120][36m DEBUG: [37mClient asking for admin command [35m(191:13)[0m[10:02:35.122][36m DEBUG: [37mSending votes to admin [35m(203:19)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [10:04:10.914][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(132:1)[0m[10:04:10.951][32m  CORE: [37mConnecting to SQL database [35m(33:5)[0m[10:04:10.952][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(140:3)[0m[10:04:10.956][32m  CORE: [37mStarted Websocket server [35m(142:3)[0m[10:04:12.981][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[10:04:12.991][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[10:04:12.993][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[10:04:12.994][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    },
+    {
+        "PK": 3,
+        "uniLongName": "University of Southampton",
+        "uniShortName": "Southampton",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Southampton.png",
+        "uniEmail": "@soton.ac.uk",
+        "actName": "Joseph Futter",
+        "actImage": "https://univision.show/wp-content/uploads/2021/04/167791161_280535850178058_4438313001389478444_n.jpg"
+    },
+    {
+        "PK": 4,
+        "uniLongName": "Academy of Contemporary Music",
+        "uniShortName": "ACM",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/ACM.png",
+        "uniEmail": "@acm.ac.uk",
+        "actName": "Alys",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/WEBSITE-SHOT-scaled.jpg"
+    },
+    {
+        "PK": 5,
+        "uniLongName": "University for the Creative Arts",
+        "uniShortName": "UCA",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/UCA.png",
+        "uniEmail": "@students.uca.ac.uk",
+        "actName": "The Vegas Rats",
+        "actImage": "https://univision.show/wp-content/uploads/2021/02/IMG_0210-2-1-scaled.jpg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[10:04:13.050][36m DEBUG: [37mClient asking for admin command [35m(191:13)[0m[10:04:13.052][36m DEBUG: [37mSending votes to admin [35m(203:19)[0m[10:05:11.588][31m ERROR: [37mCould not end connection cleanly [35m(362:9)[0m[10:05:11.959][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[10:05:11.960][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[10:05:11.960][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[10:05:11.961][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    },
+    {
+        "PK": 3,
+        "uniLongName": "University of Southampton",
+        "uniShortName": "Southampton",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Southampton.png",
+        "uniEmail": "@soton.ac.uk",
+        "actName": "Joseph Futter",
+        "actImage": "https://univision.show/wp-content/uploads/2021/04/167791161_280535850178058_4438313001389478444_n.jpg"
+    },
+    {
+        "PK": 4,
+        "uniLongName": "Academy of Contemporary Music",
+        "uniShortName": "ACM",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/ACM.png",
+        "uniEmail": "@acm.ac.uk",
+        "actName": "Alys",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/WEBSITE-SHOT-scaled.jpg"
+    },
+    {
+        "PK": 5,
+        "uniLongName": "University for the Creative Arts",
+        "uniShortName": "UCA",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/UCA.png",
+        "uniEmail": "@students.uca.ac.uk",
+        "actName": "The Vegas Rats",
+        "actImage": "https://univision.show/wp-content/uploads/2021/02/IMG_0210-2-1-scaled.jpg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[10:05:12.002][36m DEBUG: [37mClient asking for admin command [35m(191:13)[0m[10:05:12.003][36m DEBUG: [37mSending votes to admin [35m(203:19)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [14:04:41.657][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(132:1)[0m[14:04:42.068][32m  CORE: [37mConnecting to SQL database [35m(33:5)[0m[14:04:42.068][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(140:3)[0m[14:04:42.073][32m  CORE: [37mStarted Websocket server [35m(142:3)[0m[14:04:43.200][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[14:04:43.241][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[14:04:43.243][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[14:04:43.245][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    },
+    {
+        "PK": 3,
+        "uniLongName": "University of Southampton",
+        "uniShortName": "Southampton",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Southampton.png",
+        "uniEmail": "@soton.ac.uk",
+        "actName": "Joseph Futter",
+        "actImage": "https://univision.show/wp-content/uploads/2021/04/167791161_280535850178058_4438313001389478444_n.jpg"
+    },
+    {
+        "PK": 4,
+        "uniLongName": "Academy of Contemporary Music",
+        "uniShortName": "ACM",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/ACM.png",
+        "uniEmail": "@acm.ac.uk",
+        "actName": "Alys",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/WEBSITE-SHOT-scaled.jpg"
+    },
+    {
+        "PK": 5,
+        "uniLongName": "University for the Creative Arts",
+        "uniShortName": "UCA",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/UCA.png",
+        "uniEmail": "@students.uca.ac.uk",
+        "actName": "The Vegas Rats",
+        "actImage": "https://univision.show/wp-content/uploads/2021/02/IMG_0210-2-1-scaled.jpg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[14:05:30.617][36m DEBUG: [37mNew connection established, sending it meta data [35m(146:5)[0m[14:05:30.618][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:149:7)[0m[14:05:30.618][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:155:7)[0m[14:05:30.619][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    },
+    {
+        "PK": 3,
+        "uniLongName": "University of Southampton",
+        "uniShortName": "Southampton",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Southampton.png",
+        "uniEmail": "@soton.ac.uk",
+        "actName": "Joseph Futter",
+        "actImage": "https://univision.show/wp-content/uploads/2021/04/167791161_280535850178058_4438313001389478444_n.jpg"
+    },
+    {
+        "PK": 4,
+        "uniLongName": "Academy of Contemporary Music",
+        "uniShortName": "ACM",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/ACM.png",
+        "uniEmail": "@acm.ac.uk",
+        "actName": "Alys",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/WEBSITE-SHOT-scaled.jpg"
+    },
+    {
+        "PK": 5,
+        "uniLongName": "University for the Creative Arts",
+        "uniShortName": "UCA",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/UCA.png",
+        "uniEmail": "@students.uca.ac.uk",
+        "actName": "The Vegas Rats",
+        "actImage": "https://univision.show/wp-content/uploads/2021/02/IMG_0210-2-1-scaled.jpg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:164:7)[0m[14:05:38.936][31m ERROR: [37mCould not end connection cleanly [35m(362:9)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [14:12:36.623][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(133:1)[0m[14:12:37.012][32m  CORE: [37mConnecting to SQL database [35m(34:5)[0m[14:12:37.013][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(141:3)[0m[14:12:37.017][32m  CORE: [37mStarted Websocket server [35m(143:3)[0m[14:12:37.423][36m DEBUG: [37mNew connection established, sending it meta data [35m(147:5)[0m[14:12:37.435][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:150:7)[0m[14:12:37.437][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    },
+    {
+        "PK": 3,
+        "uniLongName": "University of Southampton",
+        "uniShortName": "Southampton",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Southampton.png",
+        "uniEmail": "@soton.ac.uk",
+        "actName": "Joseph Futter",
+        "actImage": "https://univision.show/wp-content/uploads/2021/04/167791161_280535850178058_4438313001389478444_n.jpg"
+    },
+    {
+        "PK": 4,
+        "uniLongName": "Academy of Contemporary Music",
+        "uniShortName": "ACM",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/ACM.png",
+        "uniEmail": "@acm.ac.uk",
+        "actName": "Alys",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/WEBSITE-SHOT-scaled.jpg"
+    },
+    {
+        "PK": 5,
+        "uniLongName": "University for the Creative Arts",
+        "uniShortName": "UCA",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/UCA.png",
+        "uniEmail": "@students.uca.ac.uk",
+        "actName": "The Vegas Rats",
+        "actImage": "https://univision.show/wp-content/uploads/2021/02/IMG_0210-2-1-scaled.jpg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:165:7)[0m[14:12:37.438][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:156:7)[0m[14:14:46.422][31m ERROR: [37mCould not end connection cleanly [35m(363:9)[0m[14:14:46.814][36m DEBUG: [37mNew connection established, sending it meta data [35m(147:5)[0m[14:14:46.820][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:150:7)[0m[14:14:46.820][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:156:7)[0m[14:14:46.821][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    },
+    {
+        "PK": 3,
+        "uniLongName": "University of Southampton",
+        "uniShortName": "Southampton",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Southampton.png",
+        "uniEmail": "@soton.ac.uk",
+        "actName": "Joseph Futter",
+        "actImage": "https://univision.show/wp-content/uploads/2021/04/167791161_280535850178058_4438313001389478444_n.jpg"
+    },
+    {
+        "PK": 4,
+        "uniLongName": "Academy of Contemporary Music",
+        "uniShortName": "ACM",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/ACM.png",
+        "uniEmail": "@acm.ac.uk",
+        "actName": "Alys",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/WEBSITE-SHOT-scaled.jpg"
+    },
+    {
+        "PK": 5,
+        "uniLongName": "University for the Creative Arts",
+        "uniShortName": "UCA",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/UCA.png",
+        "uniEmail": "@students.uca.ac.uk",
+        "actName": "The Vegas Rats",
+        "actImage": "https://univision.show/wp-content/uploads/2021/02/IMG_0210-2-1-scaled.jpg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:165:7)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [14:14:50.086][32m  CORE: [37mConnecting to SQL database [35m(34:5)[0m[14:14:50.086][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(141:3)[0m[14:14:50.091][32m  CORE: [37mStarted Websocket server [35m(143:3)[0m[14:14:50.043][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(133:1)[0m[14:14:50.849][36m DEBUG: [37mNew connection established, sending it meta data [35m(147:5)[0m[14:14:50.860][36m DEBUG: [37mData from DB: [
+    {
+        "status": "OPEN"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:150:7)[0m[14:14:50.862][36m DEBUG: [37mData from DB: [
+    {
+        "IP": "10.10.10.11"
+    },
+    {
+        "IP": "10.10.10.12"
+    },
+    {
+        "IP": "10.10.10.10"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:156:7)[0m[14:14:50.863][36m DEBUG: [37mData from DB: [
+    {
+        "PK": 1,
+        "uniLongName": "University of Surrey",
+        "uniShortName": "Surrey",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Surrey.png",
+        "uniEmail": "@surrey.ac.uk",
+        "actName": "Men, by Women",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/MBW-scaled.jpg"
+    },
+    {
+        "PK": 2,
+        "uniLongName": "Leeds Conservatoire",
+        "uniShortName": "Leeds",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Leeds.png",
+        "uniEmail": "@lcm.ac.uk",
+        "actName": "Alleyways",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/File_000-scaled.jpeg"
+    },
+    {
+        "PK": 3,
+        "uniLongName": "University of Southampton",
+        "uniShortName": "Southampton",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/Southampton.png",
+        "uniEmail": "@soton.ac.uk",
+        "actName": "Joseph Futter",
+        "actImage": "https://univision.show/wp-content/uploads/2021/04/167791161_280535850178058_4438313001389478444_n.jpg"
+    },
+    {
+        "PK": 4,
+        "uniLongName": "Academy of Contemporary Music",
+        "uniShortName": "ACM",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/ACM.png",
+        "uniEmail": "@acm.ac.uk",
+        "actName": "Alys",
+        "actImage": "https://univision.show/wp-content/uploads/2021/03/WEBSITE-SHOT-scaled.jpg"
+    },
+    {
+        "PK": 5,
+        "uniLongName": "University for the Creative Arts",
+        "uniShortName": "UCA",
+        "uniImage": "https://univision.show/wp-content/uploads/2021/03/UCA.png",
+        "uniEmail": "@students.uca.ac.uk",
+        "actName": "The Vegas Rats",
+        "actImage": "https://univision.show/wp-content/uploads/2021/02/IMG_0210-2-1-scaled.jpg"
+    }
+] [35m(onn.query.then (/home/qpi38xodfwt2/public_html/vote.chilton.tv/app.js:165:7)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [14:16:36.753][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(136:1)[0m[14:16:36.790][32m  CORE: [37mConnecting to SQL database [35m(34:5)[0m[14:16:36.791][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(144:3)[0m[14:16:36.795][32m  CORE: [37mStarted Websocket server [35m(146:3)[0m[14:16:37.354][36m DEBUG: [37mNew connection established, sending it meta data [35m(150:5)[0m[14:16:40.347][31m ERROR: [37mCould not end connection cleanly [35m(363:9)[0m[14:16:40.579][36m DEBUG: [37mNew connection established, sending it meta data [35m(150:5)[0m[14:16:42.165][31m ERROR: [37mCould not end connection cleanly [35m(363:9)[0m[14:16:42.310][36m DEBUG: [37mNew connection established, sending it meta data [35m(150:5)[0m[14:16:43.292][31m ERROR: [37mCould not end connection cleanly [35m(363:9)[0m[14:16:43.469][36m DEBUG: [37mNew connection established, sending it meta data [35m(150:5)[0m[14:16:44.259][31m ERROR: [37mCould not end connection cleanly [35m(363:9)[0m[14:16:44.395][36m DEBUG: [37mNew connection established, sending it meta data [35m(150:5)[0m[14:16:45.005][31m ERROR: [37mCould not end connection cleanly [35m(363:9)[0m[14:16:45.155][36m DEBUG: [37mNew connection established, sending it meta data [35m(150:5)[0m[14:16:45.762][31m ERROR: [37mCould not end connection cleanly [35m(363:9)[0m[14:16:45.897][36m DEBUG: [37mNew connection established, sending it meta data [35m(150:5)[0m _    _         _ __      __ _       _                __      __     _    _                      ___  | |  | |       (_)\ \    / /(_)     (_)               \ \    / /    | |  (_)                    |__ \ | |  | | _ __   _  \ \  / /  _  ___  _   ___   _ __    \ \  / /___  | |_  _  _ __    __ _  __   __ ) || |  | || '_ \ | |  \ \/ /  | |/ __|| | / _ \ | '_ \    \ \/ // _ \ | __|| || '_ \  / _` | \ \ / // / | |__| || | | || |   \  /   | |\__ \| || (_) || | | |    \  /| (_) || |_ | || | | || (_| |  \ V // /_  \____/ |_| |_||_|    \/    |_||___/|_| \___/ |_| |_|     \/  \___/  \__||_||_| |_| \__, |   \_/|____|                                                                                     __/ |                                                                                                |___/    [14:18:46.328][32m  CORE: [37mStarting server: [33mapp.js[37m [35m(136:1)[0m[14:18:46.367][32m  CORE: [37mConnecting to SQL database [35m(34:5)[0m[14:18:46.367][32m  CORE: [37mRunning as [33mstandalone[37m websocket server [35m(144:3)[0m[14:18:46.371][32m  CORE: [37mStarted Websocket server [35m(146:3)[0m[14:18:46.467][36m DEBUG: [37mNew connection established, sending it meta data [35m(150:5)[0m

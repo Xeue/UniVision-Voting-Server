@@ -1,0 +1,4 @@
+# a2enmod proxy_wstunnel
+
+RewriteEngine on
+RewriteRule  (.*)  ws://localhost:9002/$1  [P,L] 
