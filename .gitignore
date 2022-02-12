@@ -4,3 +4,4 @@ config.conf
 nohup.out
 *.conf
 *.properties
+package-lock.json
