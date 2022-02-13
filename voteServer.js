@@ -13,13 +13,10 @@ const type = "Server";
 const loadTime = new Date().getTime();
 let DBConn = 0;
 let transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true, // use SSL
+  service: "Gmail",
   auth: {
     user: "admin@univision.show",
-    pass: "byjtdtmqowrlaysq"
-    //pass: "rubixlounge"
+    pass: "RubixLounge"
   }
 });
 
@@ -106,7 +103,7 @@ class Datebase {
 }
 
 let myID = `S_${loadTime}_${version}`;
-let port = 9002;
+let port = 3001;
 let host = "vote.chilton.tv";
 let loggingLevel = "D";
 let debugLineNum = true;
@@ -121,6 +118,7 @@ let printPings = true;
 let voteCodes = ["SURREY", "TESTIN"];
 let status;
 let acts;
+let countOnVerify = true;
 
 let r = "\x1b[31m";
 let g = "\x1b[32m";
@@ -170,6 +168,92 @@ function startServer() {
   log("Started Websocket server");
   const MConn = new Datebase();
 
+
+  MConn.query(`SELECT count(*) as count
+    FROM information_schema.TABLES
+    WHERE (TABLE_SCHEMA = 'univision') AND (TABLE_NAME = 'main_votes')
+  `).then((rows)=>{
+    if (rows[0].count == 0) {
+      log("Votes table doesn't exist, creating new one", "S");
+      MConn.query(`CREATE TABLE \`main_votes\` (
+        \`PK\` int(11) NOT NULL,
+        \`act\` int(11) DEFAULT NULL,
+        \`fromUni\` int(11) NOT NULL,
+        \`code\` varchar(256) DEFAULT NULL,
+        \`email\` varchar(256) NOT NULL,
+        \`verificationCode\` varchar(256) DEFAULT NULL,
+        \`IP\` varchar(256) NOT NULL,
+        \`enabled\` tinyint(1) NOT NULL DEFAULT '1',
+        \`verified\` tinyint(1) NOT NULL DEFAULT '0',
+        \`dateVote\` timestamp NULL DEFAULT NULL
+      ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+      `);
+    }
+  });
+
+  MConn.query(`SELECT count(*) as count
+  FROM information_schema.TABLES
+  WHERE (TABLE_SCHEMA = 'univision') AND (TABLE_NAME = 'main_acts')
+  `).then((rows)=>{
+    if (rows[0].count == 0) {
+      log("Acts table doesn't exist, creating new one", "S");
+      MConn.query(`CREATE TABLE \`main_acts\` (
+        \`PK\` int(11) NOT NULL,
+        \`uniLongName\` text NOT NULL,
+        \`uniShortName\` text NOT NULL,
+        \`uniImage\` text NOT NULL,
+        \`uniEmail\` text NOT NULL,
+        \`actName\` text NOT NULL,
+        \`actImage\` text NOT NULL
+      ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+      `);
+    }
+  });
+
+  MConn.query(`SELECT count(*) as count
+  FROM information_schema.TABLES
+  WHERE (TABLE_SCHEMA = 'univision') AND (TABLE_NAME = 'main_bans')
+  `).then((rows)=>{
+    if (rows[0].count == 0) {
+      log("Bans table doesn't exist, creating new one", "S");
+      MConn.query(`CREATE TABLE \`main_bans\` (
+        \`PK\` int(11) NOT NULL,
+        \`IP\` varchar(256) NOT NULL,
+        \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+      `);
+    }
+  });
+
+  MConn.query(`SELECT count(*) as count
+  FROM information_schema.TABLES
+  WHERE (TABLE_SCHEMA = 'univision') AND (TABLE_NAME = 'main_status')
+  `).then((rows)=>{
+    if (rows[0].count == 0) {
+      log("Status table doesn't exist, creating new one", "S");
+      MConn.query(`CREATE TABLE \`main_status\` (
+        \`status\` varchar(256) NOT NULL,
+        \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+      `);
+    }
+  });
+
+  MConn.query(`SELECT count(*) as count
+  FROM information_schema.TABLES
+  WHERE (TABLE_SCHEMA = 'univision') AND (TABLE_NAME = 'main_judge')
+  `).then((rows)=>{
+    if (rows[0].count == 0) {
+      log("Judge table doesn't exist, creating new one", "S");
+      MConn.query(`CREATE TABLE \`main_judge\` (
+        \`act\` int(11) NOT NULL,
+        \`points\` int(11) NOT NULL,
+        \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+      `);
+    }
+  });
+
   MConn.query('SELECT * FROM main_acts;').then((rows)=>{
     log("Loaded acts info");
     acts = rows;
@@ -192,16 +276,27 @@ function startServer() {
         data[row.PK].act = row.actName;
         data[row.PK].actImage = row.actImage;
       });
-      socket.send(`{"type":"voteActs","data":${JSON.stringify(data)}}`);
+      let actsJSON = `{"type":"voteActs","data":${JSON.stringify(data)}}`;
       MConn.query('SELECT `status` FROM main_status;').then((rows)=>{
         status = rows[0].status;
-        socket.send(`{"type":"voteStatus","status":"${rows[0].status}"}`);
+        let statusJSON = `{"type":"voteStatus","status":"${rows[0].status}"}`;
         MConn.query('SELECT `IP` FROM main_bans;').then((rows)=>{
           let IPs = [];
           rows.forEach( (row) => {
             IPs.push(row.IP);
           });
-          socket.send(`{"type":"voteBans","IPs":${JSON.stringify(IPs)}}`);
+          let bansJSON = `{"type":"voteBans","IPs":${JSON.stringify(IPs)}}`;
+          MConn.query(`SELECT * FROM main_judge`).then((rows)=>{
+            let points = {}
+            rows.forEach( (row) => {
+              points[row.act] = row.points
+            });
+            let judgeJSON = JSON.stringify({"type":"voteJudge","points":points});
+            socket.send(actsJSON);
+            socket.send(statusJSON);
+            socket.send(bansJSON);
+            socket.send(judgeJSON);
+          });
         });
       });
     });
@@ -219,7 +314,7 @@ function startServer() {
         }
         switch (msgObj.type) {
           case "voteAdmin":
-            commandAdmin(msgObj, socket);
+            commandAdmin(msgObj, socket, MConn);
             break;
           case "voteStart":
             commandStart(msgObj, socket, req);
@@ -228,10 +323,27 @@ function startServer() {
             commandVote(msgObj, socket, req);
             break;
           case "voteConfirm":
-            commandConfirm(msgObj, socket);
+            commandConfirm(msgObj, socket, MConn);
+            break;
+          case "voteEdit":
+            commandEdit(msgObj, socket);
             break;
           case "pong":
             socket.pingStatus = "alive";
+            break;
+          case "voteJudge":
+            MConn.query(`SELECT * FROM main_judge WHERE act='${msgObj.act}'`).then((rows)=>{
+              handelJudgeUpdates(msgObj, rows, MConn).then(()=>{
+                MConn.query(`SELECT * FROM main_judge`).then((rows)=>{
+                  let points = {}
+                  rows.forEach( (row) => {
+                    points[row.act] = row.points
+                  });
+                  log("Relaying judge votes", "D");
+                  sendAll({"type":"voteJudge","points":points});
+                });
+              });
+            });
             break;
           default:
             log("Unknown message: "+msgJSON, "W");
@@ -266,7 +378,7 @@ function startServer() {
   });
 }
 
-function commandAdmin(msgObj, socket) {
+function commandAdmin(msgObj, socket, SQLConn) {
   log(`Client asking server to run command: ${b}${msgObj.command}${w}`, "D");
   const MConn = new Datebase();
   switch (msgObj.command) {
@@ -299,12 +411,18 @@ function commandAdmin(msgObj, socket) {
     case "verify":
       MConn.query(`UPDATE \`main_votes\` SET \`verified\`=1 WHERE \`PK\`=${msgObj.PK};`).then(()=>{
         MConn.close();
+        if (countOnVerify) {
+          countTotals(SQLConn);
+        }
         updateVoteAdmin(msgObj.PK);
       });
       break;
     case "unVerify":
       MConn.query(`UPDATE \`main_votes\` SET \`verified\`=0 WHERE \`PK\`=${msgObj.PK};`).then(()=>{
         MConn.close();
+        if (countOnVerify) {
+          countTotals(SQLConn);
+        }
         updateVoteAdmin(msgObj.PK).then((rows)=>{
           verifyEmail(msgObj.PK);
         });
@@ -312,12 +430,18 @@ function commandAdmin(msgObj, socket) {
       break;
     case "exclude":
       MConn.query(`UPDATE \`main_votes\` SET \`enabled\`=0 WHERE \`PK\`=${msgObj.PK};`).then(()=>{
+        if (countOnVerify) {
+          countTotals(SQLConn);
+        }
         MConn.close();
         updateVoteAdmin(msgObj.PK);
       });
       break;
     case "include":
       MConn.query(`UPDATE \`main_votes\` SET \`enabled\`=1 WHERE \`PK\`=${msgObj.PK};`).then(()=>{
+        if (countOnVerify) {
+          countTotals(SQLConn);
+        }
         MConn.close();
         updateVoteAdmin(msgObj.PK);
       });
@@ -373,13 +497,25 @@ function commandAdmin(msgObj, socket) {
         });
       });
       break;
+    case "reset":
+      let d = new Date();
+      let day = d.getDay();
+      let hr = d.getHours();
+      let min = d.getMinutes();
+      MConn.query(`ALTER TABLE \`main_votes\` RENAME TO \`old_votes_${day}-${hr}-${min}\`;`).then((rows)=>{
+        MConn.query("CREATE TABLE `main_votes` (`PK` int(11) NOT NULL,`act` int(11) DEFAULT NULL,`fromUni` int(11) NOT NULL,`code` varchar(256) DEFAULT NULL,`email` varchar(256) NOT NULL,`verificationCode` varchar(256) DEFAULT NULL,`IP` varchar(256) NOT NULL,`enabled` tinyint(1) NOT NULL DEFAULT '1',`verified` tinyint(1) NOT NULL DEFAULT '0',`dateVote` timestamp NULL DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=latin1;").then(()=>{
+          sendAll(`{"type":"adminReset"}`);
+          MConn.close();
+        });
+      });
+      break;
     default:
   }
 }
 
 function commandStart(msgObj, socket, req) {
   log("Client has started voting", "D");
-  let myIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  let myIP = req.headers['cf-connecting-ip'] || req.socket.remoteAddress;
   let vote = {
     "email": msgObj.email,
     "fromUni": msgObj.fromUni,
@@ -412,7 +548,7 @@ function commandStart(msgObj, socket, req) {
 
 function commandVote(msgObj, socket, req) {
   let date = new Date().toISOString().slice(0, 19).replace('T', ' ');
-  let socketIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  let socketIP = req.headers['cf-connecting-ip'] || req.socket.remoteAddress;
   const MConn = new Datebase();
   MConn.query(`SELECT IP FROM main_bans WHERE IP='${socketIP}'`).then((rows)=>{
 
@@ -441,12 +577,15 @@ function commandVote(msgObj, socket, req) {
   });
 }
 
-function commandConfirm(msgObj, socket) {
+function commandConfirm(msgObj, socket, SQLConn) {
   if (status == "OPEN") {
     const MConn = new Datebase();
     MConn.update({"verified":1},{"verificationCode":msgObj.confirmationCode}, "main_votes").then((result)=>{
       MConn.query(`SELECT * FROM \`main_votes\` WHERE \`verificationCode\`='${msgObj.confirmationCode}';`).then((rows)=>{
         MConn.close();
+        if (countOnVerify) {
+          countTotals(SQLConn);
+        }
         let packet = {};
         packet.type = "voteMeta";
         packet.votes = rows;
@@ -459,6 +598,106 @@ function commandConfirm(msgObj, socket) {
         return rows;
       });
     });
+  }
+}
+
+function commandEdit(msgObj, socket) {
+  log(`Client asking server to edit acts`, "D");
+  const MConn = new Datebase();
+  switch (msgObj.command) {
+    case "new":
+      let data = {
+        "uniLongName":"Full name",
+        "uniShortName":"Short name",
+        "uniImage":"URL of the Uni image",
+        "uniEmail":"Email extension of the Uni",
+        "actName":"The acts name",
+        "actImage":"URL of the acts image"
+      };
+      MConn.insert(data, "main_acts").then((result)=>{
+        MConn.query('SELECT * FROM main_acts;').then((rows)=>{
+          let data = {};
+          acts = rows;
+          rows.forEach( (row) => {
+            data[row.PK] = {};
+            data[row.PK].email = row.uniEmail;
+            data[row.PK].logo = row.uniImage;
+            data[row.PK].name = row.uniLongName;
+            data[row.PK].short = row.uniShortName;
+            data[row.PK].act = row.actName;
+            data[row.PK].actImage = row.actImage;
+          });
+          sendAll(`{"type":"voteActs","data":${JSON.stringify(data)}}`);
+          MConn.close();
+        });
+      });
+      break;
+    case "save":
+      let actsData = msgObj.data;
+      for (var actPK in actsData) {
+        if (actsData.hasOwnProperty(actPK)) {
+          let actData = actsData[actPK];
+          let updateData = {};
+          if (actData.email) {updateData.uniEmail = actData.email;}
+          if (actData.logo) {updateData.uniImage = actData.logo;}
+          if (actData.name) {updateData.uniLongName = actData.name;}
+          if (actData.short) {updateData.uniShortName = actData.short;}
+          if (actData.act) {updateData.actName = actData.act;}
+          if (actData.actImage) {updateData.actImage = actData.actImage;}
+
+          MConn.update(updateData, {'PK':actPK}, "main_acts").then((result)=>{
+            MConn.query('SELECT * FROM main_acts;').then((rows)=>{
+              let data = {};
+              acts = rows;
+              rows.forEach( (row) => {
+                data[row.PK] = {};
+                data[row.PK].email = row.uniEmail;
+                data[row.PK].logo = row.uniImage;
+                data[row.PK].name = row.uniLongName;
+                data[row.PK].short = row.uniShortName;
+                data[row.PK].act = row.actName;
+                data[row.PK].actImage = row.actImage;
+              });
+              sendAll(`{"type":"voteActs","data":${JSON.stringify(data)}}`);
+              MConn.close();
+            });
+          });
+        }
+      }
+      break;
+    case "delete":
+      MConn.query(`DELETE FROM main_acts WHERE PK='${msgObj.PK}'`).then((row)=>{
+        MConn.query(`DELETE FROM main_acts WHERE act='${msgObj.PK}'`).then((row)=>{
+          MConn.query(`DELETE FROM main_acts WHERE fromUni='${msgObj.PK}'`).then((row)=>{
+            MConn.query('SELECT * FROM main_acts;').then((rows)=>{
+              let data = {};
+              acts = rows;
+              rows.forEach( (row) => {
+                data[row.PK] = {};
+                data[row.PK].email = row.uniEmail;
+                data[row.PK].logo = row.uniImage;
+                data[row.PK].name = row.uniLongName;
+                data[row.PK].short = row.uniShortName;
+                data[row.PK].act = row.actName;
+                data[row.PK].actImage = row.actImage;
+              });
+              sendAll(`{"type":"voteActs","data":${JSON.stringify(data)}}`);
+              MConn.close();
+            });
+          });
+        });
+      });
+      break;
+    default:
+
+  }
+}
+
+function handelJudgeUpdates(msgObj, rows, MConn) {
+  if (rows.length > 0) {
+    return MConn.update({"points":msgObj.points}, {"act":msgObj.act}, "main_judge");
+  } else {
+    return MConn.insert({"act":msgObj.act, "points":msgObj.points},"main_judge");
   }
 }
 
@@ -512,20 +751,21 @@ function verifyEmail(PK) {
   return MConn.query(`SELECT * FROM \`main_votes\` WHERE \`PK\`='${PK}';`).then((rows)=>{
 
     let mailOptions = {
-      "from": 'sam@chilton.tv',
+      "from": 'Univision Voting <mail@univision.show>',
       "to": rows[0].email,
-      "subject": 'UniVision Vote confirmation',
-      "text": `Please click https://univision.show/voteConfirmation/?code=${rows[0].verificationCode} to confirm your vote.`,
-      "html": `Please click <a href='https://univision.show/voteConfirmation/?code=${rows[0].verificationCode}'>Verify</a> to confirm your vote.`
+      "subject": 'Univision Vote confirmation',
+      "text": `Thank you for your vote!
+      Please click https://univision.show/voteConfirmation/?code=${rows[0].verificationCode} to confirm your vote.`,
+      "html": `Thank you for your vote!<br />Please click <a href='https://univision.show/voteConfirmation/?code=${rows[0].verificationCode}'>Verify</a> to confirm your vote.<br />Or go to: https://univision.show/voteConfirmation/?code=${rows[0].verificationCode}<br /><br />We hope you have enjoyed the show.`
     };
     log(mailOptions, "A");
-    /*transporter.sendMail(mailOptions, function(error, info){
+    transporter.sendMail(mailOptions, function(error, info){
       if (error) {
         log(error, "E");
       } else {
         log(`Email sent: ${info.response}`);
       }
-    });*/
+    });
   }).then(()=>{
     MConn.close();
   });
@@ -537,9 +777,11 @@ function startLoops(MConn) {
     doPing();
   }, 5000);
 
-  setInterval(() => {
-    countTotals(MConn);
-  }, 20000);
+  if (countOnVerify == false) {
+    setInterval(() => {
+      countTotals(MConn);
+    }, 20000);
+  }
 }
 
 function doPing() {
@@ -651,6 +893,9 @@ function log(message, level, lineNumInp) {
   let lineNum = '('+stack[2].substr(stack[2].indexOf(filename)+filename.length);
   if (typeof lineNumInp !== "undefined") {
     lineNum = lineNumInp;
+  }
+  if (lineNum[lineNum.length - 1] !== ")") {
+    lineNum += ")";
   }
   let timeNow = new Date();
   let hours = String(timeNow.getHours()).padStart(2, "0");
