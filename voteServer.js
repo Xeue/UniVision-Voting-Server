@@ -12,23 +12,15 @@ const version = "2.0";
 const type = "Server";
 const loadTime = new Date().getTime();
 let DBConn = 0;
-let transporter = nodemailer.createTransport({
-  service: "Gmail",
-  auth: {
-    user: "admin@univision.show",
-    pass: "RubixLounge"
-  }
-});
+
+let MYsqlDetails = JSON.parse(fs.readFileSync(__dirname + "/database.conf"));
+let EmailDetails = JSON.parse(fs.readFileSync(__dirname + "/email.conf"));
+
+let transporter = nodemailer.createTransport(EmailDetails);
 
 class Datebase {
   constructor() {
-    this.connection = mysql.createPool({
-      connectionLimit : 10,
-      host: "localhost",
-      user: "univision",
-      password: "rubixlounge",
-      database: "univision"
-    });
+    this.connection = mysql.createPool(MYsqlDetails);
     DBConn++;
     log(`${g}Connecting${w} to SQL database, current connections: ${y}${DBConn}${w}`, "S");
   }
