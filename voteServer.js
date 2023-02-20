@@ -318,12 +318,22 @@ function setupExpress(expressApp) {
 	expressApp.get('/', async function(request, response) {
 		handleRoot(request, response);
 	});
+
+  expressApp.get('/admin', async function(request, response) {
+		handleAdmin(request, response);
+	});
 }
 
 async function handleRoot(request, response) {
 	log('Serving index page', 'A');
 	response.header('Content-type', 'text/html');
 	response.render('index', {});
+}
+
+async function handleAdmin(request, response) {
+	log('Serving admin page', 'A');
+	response.header('Content-type', 'text/html');
+	response.render('admin', {});
 }
 
 function commandAdmin(msgObj, socket) {
