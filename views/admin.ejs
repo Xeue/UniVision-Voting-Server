@@ -1,16 +1,131 @@
 <!DOCTYPE html>
 
 <html>
-  	<head>
-		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		<title>Denied.</title>
-		<script>
-			console.log('Yes this page is different to the other page, but there\'s still nothing here');
-		</script>
-	</head>
-	<body>
-		<h1>Bold of you to assume I'd actually have put anything here...</h1>
-		<iframe src="https://giphy.com/embed/tvGOBZKNEX0ac" width="480" height="204" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
-		<p><a href="https://giphy.com/gifs/mrw-coffee-wants-tvGOBZKNEX0ac">via GIPHY</a></p>
-	</body>
+
+<head>
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>Admin</title>
+	<link rel="stylesheet" id="vote_css" href="/css/voteAdmin.css" type="text/css" media="all">
+	<link rel="stylesheet" id="univision_css" href="/css/univision.css" type="text/css" media="all">
+	<script>
+		const host = "<%- host %>";
+		const version = "<%- version %>";
+	</script>
+	<script type="text/javascript" id="jQuery_js" src="/js/jQuery.js"></script>
+	<script type="text/javascript" id="vote_js" src="/js/voteAdmin.js"></script>
+	<script type="text/javascript" id="ws_js" src="/js/ws.js"></script>
+	<script type="text/javascript" id="cookie_js" src="/js/cookie.js"></script>
+</head>
+
+<body>
+	<main id="main" class="site-main disconnected">
+		<div id="vAdmin_bttns">
+			<button id="voteAdmin_early">Early</button>
+			<button id="voteAdmin_open">Open</button>
+			<button id="voteAdmin_close">Close</button>
+			<div id="vAdmin_autoCont">
+				<button id="voteAdmin_reset">Reset Votes</button>
+				<button id="voteAdmin_editActs">Edit Acts</button>
+				<button id="vAdmin_autoScroll" class="vote_bttn_active">AutoScroll</button>
+			</div>
+		</div>
+
+		<section id="vAdmin_feed_cont">
+			<table id="vAdmin_feed_table">
+				<thead>
+					<tr>
+						<th>Email</th>
+						<th>University</th>
+						<th>Voted For</th>
+						<th>Verified</th>
+						<th>Vote Counted</th>
+						<th>IP Adress</th>
+						<th>Ban IP</th>
+						<th>Time of Vote</th>
+					</tr>
+				</thead>
+				<tbody id="vAdmin_feed_tbody">
+				</tbody>
+			</table>
+		</section>
+		<div class="totals">
+			<section id="pubTotals" class="pubTotals">
+				<div class="pubTitle">
+					<div>Over all public totals</div>
+				</div>
+				<table>
+					<thead>
+						<tr>
+							<th>Act</th>
+							<th>Points</th>
+							<th>Votes (Raw data ONLY)</th>
+						</tr>
+					</thead>
+					<tbody id="totalsCont">
+					</tbody>
+				</table>
+			</section>
+			<section id="judgeTotals" class="pubTotals">
+				<div class="pubTitle">
+					<div>Judges totals</div>
+				</div>
+				<table>
+					<thead>
+						<tr>
+							<th>Act</th>
+							<th>Points</th>
+						</tr>
+					</thead>
+					<tbody id="judgeTotalsCont">
+					</tbody>
+				</table>
+			</section>
+
+			<section id="allTotals" class="pubTotals">
+				<div class="pubTitle">
+					<div>Combined totals</div>
+				</div>
+				<table>
+					<thead>
+						<tr>
+							<th>Act</th>
+							<th>Points</th>
+						</tr>
+					</thead>
+					<tbody id="allTotalsCont">
+					</tbody>
+				</table>
+			</section>
+		</div>
+
+		<div class="pubTitle">
+			<div>Per University Breakdown</div>
+		</div>
+		<section id="vAdmin_totals">
+		</section>
+		<section id="voteActs_cont" class="hidden">
+			<div id="voteActs_pop">
+				<table class="adminTable">
+					<thead>
+						<tr>
+							<th>Uni email extension</th>
+							<th>Uni Image</th>
+							<th>Uni Long Name</th>
+							<th>Uni Short Name</th>
+							<th>Act Name</th>
+							<th>Act Image</th>
+							<th>Delete</th>
+						</tr>
+					</thead>
+					<tbody id="voteActs_table">
+					</tbody>
+				</table>
+				<button id="voteActs_new">Add New</button>
+				<button id="voteActs_save">Save</button>
+				<button id="voteActs_close">Close</button>
+			</div>
+		</section>
+	</main>
+</body>
+
 </html>

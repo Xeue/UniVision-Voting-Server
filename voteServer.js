@@ -232,21 +232,21 @@ async function startServers() {
     judgeData.forEach(judge => {
       points[judge.act] = judge.points
     });
-    const actsJSON = `{"type":"voteActs","data":${JSON.stringify(actsData)}}`;
-    const statusJSON = `{"type":"voteStatus","status":"${statusData[0].status}"}`;
-    const bansJSON = `{"type":"voteBans","IPs":${JSON.stringify(IPs)}}`;
-    const judgeJSON = JSON.stringify({"type":"voteJudge","points":points});
-    socket.send(actsJSON);
-    socket.send(statusJSON);
-    socket.send(bansJSON);
-    socket.send(judgeJSON);
+    if (statusData.length == 0) {
+      await SQL.query(`UPDATE \`main_status\` SET \`status\`='${config.get('status')}';`);
+    }
+    sendData(socket, {"type":"voteActs","data":actsData});
+    sendData(socket, {"type":"voteStatus","status":config.get('status')});
+    sendData(socket, {"type":"voteBans","IPs":IPs});
+    sendData(socket, {"type":"voteJudge","points":points});
 
     socket.pingStatus = "alive";
 
     socket.on('message', function message(msgJSON) {
       let msgObj = {};
       try {
-        msgObj = JSON.parse(msgJSON);
+        let msgData = JSON.parse(msgJSON);
+        msgObj = msgData.payload;
         if (msgObj.type !== "ping" && msgObj.type !== "pong") {
           logObj('Received', msgObj, "A");
         } else if (config.get('printPings') == true) {
@@ -263,7 +263,7 @@ async function startServers() {
             commandVote(msgObj, socket, req);
             break;
           case "voteConfirm":
-            commandConfirm(msgObj, socket);
+            commandConfirm(msgObj);
             break;
           case "voteEdit":
             commandEdit(msgObj, socket);
@@ -322,128 +322,116 @@ function setupExpress(expressApp) {
   expressApp.get('/admin', async function(request, response) {
 		handleAdmin(request, response);
 	});
+
+  expressApp.get('/verify', async function(request, response) {
+		handleVerify(request, response);
+	});
 }
 
 async function handleRoot(request, response) {
 	log('Serving index page', 'A');
 	response.header('Content-type', 'text/html');
-	response.render('index', {});
+	response.render('index', {
+    host: config.get('host'),
+    version: version
+  });
 }
 
 async function handleAdmin(request, response) {
 	log('Serving admin page', 'A');
 	response.header('Content-type', 'text/html');
-	response.render('admin', {});
+	response.render('admin', {
+    host: config.get('host'),
+    version: version
+  });
 }
 
-function commandAdmin(msgObj, socket) {
+async function handleVerify(request, response) {
+	log('Serving verify page', 'A');
+	response.header('Content-type', 'text/html');
+	response.render('verify', {
+    host: config.get('host'),
+    version: version
+  });
+}
+
+async function commandAdmin(msgObj, socket) {
   log(`Client asking server to run command: ${logs.b}${msgObj.command}${logs.w}`, "D");
   switch (msgObj.command) {
     case "status":
-      let colour;
-      if (msgObj.status == "OPEN") {
-        colour = logs.g;
-      } else {
-        colour = logs.r;
-      }
+      const colour = msgObj.status == "OPEN" ? logs.g : logs.r;
       log(`Setting status to: ${colour}${msgObj.status}${logs.w}`, "D");
-      SQL.query(`UPDATE \`main_status\` SET \`status\`='${msgObj.status}';`).then((rows)=>{
-        log("Updated voting status", "D");
-        config.set('status', msgObj.status);
-        sendAll(`{"type":"voteStatus","status":"${msgObj.status}"}`);
-      });
+      await SQL.query(`UPDATE \`main_status\` SET \`status\`='${msgObj.status}';`);
+      log("Updated voting status", "D");
+      config.set('status', msgObj.status);
+      sendAll(`{"type":"voteStatus","status":"${msgObj.status}"}`);
       break;
     case "getMeta":
       socket.admin = true;
-      SQL.query(`SELECT * FROM \`main_votes\` WHERE act IS NOT NULL;`).then((rows)=>{
-        log("Sending votes to admin", "D");
-        let packet = {};
-        packet.type = "voteMeta";
-        packet.votes = rows;
-        socket.send(JSON.stringify(packet));
+      const meta = await SQL.query(`SELECT * FROM \`main_votes\` WHERE act IS NOT NULL;`);
+      log("Sending votes to admin", "D");
+      sendData(socket, {
+        "type": "voteMeta",
+        "votes": meta
       });
       break;
     case "verify":
-      SQL.query(`UPDATE \`main_votes\` SET \`verified\`=1 WHERE \`PK\`=${msgObj.PK};`).then(()=>{
-        if (config.get('countOnVerify')) {
-          countTotals();
-        }
-        updateVoteAdmin(msgObj.PK);
-      });
+      await SQL.query(`UPDATE \`main_votes\` SET \`verified\`=1 WHERE \`PK\`=${msgObj.PK};`);
+      if (config.get('countOnVerify')) countTotals();
+      updateVoteAdmin(msgObj.PK);
       break;
     case "unVerify":
-      SQL.query(`UPDATE \`main_votes\` SET \`verified\`=0 WHERE \`PK\`=${msgObj.PK};`).then(()=>{
-        if (config.get('countOnVerify')) {
-          countTotals();
-        }
-        updateVoteAdmin(msgObj.PK).then(()=>{
-          verifyEmail(msgObj.PK);
-        });
-      });
+      await SQL.query(`UPDATE \`main_votes\` SET \`verified\`=0 WHERE \`PK\`=${msgObj.PK};`);
+      if (config.get('countOnVerify')) countTotals();
+      await updateVoteAdmin(msgObj.PK);
+      await verifyEmail(msgObj.PK);
       break;
     case "exclude":
-      SQL.query(`UPDATE \`main_votes\` SET \`enabled\`=0 WHERE \`PK\`=${msgObj.PK};`).then(()=>{
-        if (config.get('countOnVerify')) {
-          countTotals();
-        }
-        updateVoteAdmin(msgObj.PK);
-      });
+      await SQL.query(`UPDATE \`main_votes\` SET \`enabled\`=0 WHERE \`PK\`=${msgObj.PK};`);
+      if (config.get('countOnVerify')) countTotals();
+      updateVoteAdmin(msgObj.PK);
       break;
     case "include":
-      SQL.query(`UPDATE \`main_votes\` SET \`enabled\`=1 WHERE \`PK\`=${msgObj.PK};`).then(()=>{
-        if (config.get('countOnVerify')) {
-          countTotals();
-        }
-        updateVoteAdmin(msgObj.PK);
-      });
+      await SQL.query(`UPDATE \`main_votes\` SET \`enabled\`=1 WHERE \`PK\`=${msgObj.PK};`);
+      if (config.get('countOnVerify')) countTotals();
+      updateVoteAdmin(msgObj.PK);
       break;
     case "banIP":
-      SQL.query(`INSERT INTO \`main_bans\` (\`IP\`) VALUES ('${msgObj.IP}');`).then(()=>{
-        SQL.query(`SELECT \`IP\` FROM \`main_bans\`;`).then((rows)=>{
-          let IPs = [];
-          rows.forEach( (row) => {
-            IPs.push(row.IP);
+      await SQL.query(`INSERT INTO \`main_bans\` (\`IP\`) VALUES ('${msgObj.IP}');`);
+      const allBans = await SQL.query(`SELECT \`IP\` FROM \`main_bans\`;`);
+      const IPs = [];
+      allBans.forEach(ban => {
+        IPs.push(ban.IP);
+      });
+      sendAll(`{"type":"voteBans","IPs":${JSON.stringify(IPs)}}`);
+      await SQL.query(`UPDATE \`main_votes\` SET \`enabled\`=0 WHERE \`IP\`='${msgObj.IP}';`);
+      const bans = await SQL.query(`SELECT * FROM \`main_votes\` WHERE \`IP\`='${msgObj.IP}' AND act IS NOT NULL;`);
+      serverWS.clients.forEach(client => {
+        if (client.admin == true && client.readyState === 1) {
+          sendData(socket, {
+            "type": "voteMeta",
+            "votes": bans
           });
-          sendAll(`{"type":"voteBans","IPs":${JSON.stringify(IPs)}}`);
-          SQL.query(`UPDATE \`main_votes\` SET \`enabled\`=0 WHERE \`IP\`='${msgObj.IP}';`).then(()=>{
-            SQL.query(`SELECT * FROM \`main_votes\` WHERE \`IP\`='${msgObj.IP}' AND act IS NOT NULL;`).then((rows)=>{
-              let packet = {};
-              packet.type = "voteMeta";
-              packet.votes = rows;
-              let jsonPacket = JSON.stringify(packet);
-              serverWS.clients.forEach(function each(client) {
-                if (client.admin == true && client.readyState === 1) {
-                  client.send(jsonPacket);
-                }
-              });
-            });
-          });
-        });
+        }
       });
       break;
     case "unBanIP":
-      SQL.query(`DELETE FROM \`main_bans\` WHERE \`IP\`='${msgObj.IP}';`).then(()=>{
-        SQL.query(`SELECT \`IP\` FROM \`main_bans\`;`).then((rows)=>{
-          let IPs = [];
-          rows.forEach( (row) => {
-            IPs.push(row.IP);
+      await SQL.query(`DELETE FROM \`main_bans\` WHERE \`IP\`='${msgObj.IP}';`);
+      const allUnBans = await SQL.query(`SELECT \`IP\` FROM \`main_bans\`;`);
+      const unIPs = [];
+      allUnBans.forEach(ban => {
+        unIPs.push(ban.IP);
+      });
+      sendAll(`{"type":"voteBans","IPs":${JSON.stringify(unIPs)}}`);
+      SQL.query(`UPDATE \`main_votes\` SET \`enabled\`=1 WHERE \`IP\`='${msgObj.IP}';`);
+      const unBans = await SQL.query(`SELECT * FROM \`main_votes\` WHERE \`IP\`='${msgObj.IP}' AND act IS NOT NULL;`);
+      serverWS.clients.forEach(client => {
+        if (client.admin == true && client.readyState === 1) {
+          sendData(socket, {
+            "type": "voteMeta",
+            "votes": unBans
           });
-          sendAll(`{"type":"voteBans","IPs":${JSON.stringify(IPs)}}`);
-        }).then(()=>{
-          SQL.query(`UPDATE \`main_votes\` SET \`enabled\`=1 WHERE \`IP\`='${msgObj.IP}';`).then(()=>{
-            SQL.query(`SELECT * FROM \`main_votes\` WHERE \`IP\`='${msgObj.IP}' AND act IS NOT NULL;`).then((rows)=>{
-              let packet = {};
-              packet.type = "voteMeta";
-              packet.votes = rows;
-              let jsonPacket = JSON.stringify(packet);
-              serverWS.clients.forEach(function each(client) {
-                if (client.admin == true && client.readyState === 1) {
-                  client.send(jsonPacket);
-                }
-              });
-            });
-          });
-        });
+        }
       });
       break;
     case "reset":
@@ -451,11 +439,9 @@ function commandAdmin(msgObj, socket) {
       let day = d.getDay();
       let hr = d.getHours();
       let min = d.getMinutes();
-      SQL.query(`ALTER TABLE \`main_votes\` RENAME TO \`old_votes_${day}-${hr}-${min}\`;`).then((rows)=>{
-        SQL.query("CREATE TABLE `main_votes` (`PK` int(11) NOT NULL,`act` int(11) DEFAULT NULL,`fromUni` int(11) NOT NULL,`code` varchar(256) DEFAULT NULL,`email` varchar(256) NOT NULL,`verificationCode` varchar(256) DEFAULT NULL,`IP` varchar(256) NOT NULL,`enabled` tinyint(1) NOT NULL DEFAULT '1',`verified` tinyint(1) NOT NULL DEFAULT '0',`dateVote` timestamp NULL DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=latin1;").then(()=>{
-          sendAll(`{"type":"adminReset"}`);
-        });
-      });
+      await SQL.query(`ALTER TABLE \`main_votes\` RENAME TO \`old_votes_${day}-${hr}-${min}\`;`);
+      await SQL.query("CREATE TABLE `main_votes` (`PK` int(11) NOT NULL,`act` int(11) DEFAULT NULL,`fromUni` int(11) NOT NULL,`code` varchar(256) DEFAULT NULL,`email` varchar(256) NOT NULL,`verificationCode` varchar(256) DEFAULT NULL,`IP` varchar(256) NOT NULL,`enabled` tinyint(1) NOT NULL DEFAULT '1',`verified` tinyint(1) NOT NULL DEFAULT '0',`dateVote` timestamp NULL DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=latin1;");
+      sendAll(`{"type":"adminReset"}`);
       break;
     default:
   }
@@ -472,66 +458,56 @@ function commandStart(msgObj, socket, req) {
   SQL.query(`SELECT * FROM \`main_votes\` WHERE \`email\`='${msgObj.email}';`).then((rows)=>{
     if (rows.length == 0) {
       SQL.insert(vote, "main_votes").then((result)=>{
-        socket.send(`{"type":"voteRegistered","PK":"${result.insertId}"}`);
+        sendData(socket, {"type":"voteRegistered","PK":Number(result.insertId)})
       });
     } else if (rows[0].act == "" || rows[0].act == null) {
-      socket.send(`{"type":"voteRegistered","PK":"${rows[0].PK}"}`);
+      sendData(socket, {"type":"voteRegistered","PK":rows[0].PK});
     } else {
-      socket.send(`{"type":"voteAlready","PK":"${rows[0].PK}"}`);
+      sendData(socket, {"type":"voteAlready","PK":rows[0].PK});
     }
   });
 }
 
-function commandVote(msgObj, socket, req) {
-  let date = new Date().toISOString().slice(0, 19).replace('T', ' ');
-  let socketIP = req.headers['cf-connecting-ip'] || req.socket.remoteAddress;
-  SQL.query(`SELECT IP FROM main_bans WHERE IP='${socketIP}'`).then((rows)=>{
+async function commandVote(msgObj, socket, req) {
+  const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const socketIP = req.headers['cf-connecting-ip'] || req.socket.remoteAddress;
+  const bans = await SQL.query(`SELECT IP FROM main_bans WHERE IP='${socketIP}'`);
 
-    verifyCode = date+msgObj.act+socketIP+msgObj.PK;
+  const verifyCode = date+msgObj.act+socketIP+msgObj.PK;
 
-    let voteData = {
-      "act": msgObj.act,
-      "dateVote": date,
-      "enabled": 1,
-      "verified": 0,
-      "IP": socketIP,
-      "verificationCode": verifyCode.replace(/\D/g,"")
-    };
+  const voteData = {
+    "act": msgObj.act,
+    "dateVote": `'${date}'`,
+    "enabled": 1,
+    "verified": 0,
+    "IP": `'${socketIP}'`,
+    "verificationCode": verifyCode.replace(/\D/g,"")
+  };
 
-    if (rows.length != 0) {
-      voteData.enabled = 0;
-    }
-
-    SQL.update(voteData, {"PK":msgObj.PK}, "main_votes").then((result)=>{
-      socket.send(`{"type":"voteSaved","PK":"${msgObj.PK}"}`);
-      logObj("Return data", result);
-      updateVoteAdmin(msgObj.PK).then(()=>{
-        verifyEmail(msgObj.PK);
-      });
-    });
-  });
-}
-
-function commandConfirm(msgObj, socket) {
-  if (config.get('status') == "OPEN") {
-    SQL.update({"verified":1},{"verificationCode":msgObj.confirmationCode}, "main_votes").then((result)=>{
-      SQL.query(`SELECT * FROM \`main_votes\` WHERE \`verificationCode\`='${msgObj.confirmationCode}';`).then((rows)=>{
-        if (config.get('countOnVerify')) {
-          countTotals();
-        }
-        let packet = {};
-        packet.type = "voteMeta";
-        packet.votes = rows;
-        let jsonPacket = JSON.stringify(packet);
-        serverWS.clients.forEach(function each(client) {
-          if (client.admin == true && client.readyState === 1) {
-            client.send(jsonPacket);
-          }
-        });
-        return rows;
-      });
-    });
+  if (bans.length != 0) {
+    voteData.enabled = 0;
   }
+
+  SQL.update(voteData, {"PK":msgObj.PK}, "main_votes").then(async result => {
+    sendData(socket, {"type":"voteSaved","PK":msgObj.PK});
+    await updateVoteAdmin(msgObj.PK);
+    await verifyEmail(msgObj.PK);
+  });
+}
+
+async function commandConfirm(msgObj) {
+  if (config.get('status') !== "OPEN") return;
+  await SQL.update({"verified":1},{"verificationCode":msgObj.confirmationCode}, "main_votes");
+  const votes = await SQL.query(`SELECT * FROM \`main_votes\` WHERE \`verificationCode\`='${msgObj.confirmationCode}';`);
+  if (config.get('countOnVerify')) countTotals();
+  serverWS.clients.forEach(client => {
+    if (client.admin !== true || client.readyState !== 1) return;
+    sendData(client, {
+      "type": "voteMeta",
+      "votes": votes
+    });
+  });
+  return votes;
 }
 
 async function commandEdit(msgObj, socket) {
@@ -640,7 +616,7 @@ function sendAll(json) {
 
   serverWS.clients.forEach(function each(client) {
     if (client.readyState === 1) {
-      client.send(JSON.stringify(obj));
+      sendData(client, obj);
     }
   });
 }
@@ -654,7 +630,7 @@ function sendAdmins(json) {
   }
   serverWS.clients.forEach(function each(client) {
     if (client.admin == true && client.readyState === 1) {
-      client.send(JSON.stringify(obj));
+      sendData(client, obj);
     }
   });
 }
@@ -679,10 +655,10 @@ async function verifyEmail(PK) {
     Please click https://univision.show/voteConfirmation/?code=${votes[0].verificationCode} to confirm your vote.`,
     "html": `Thank you for your vote!<br />Please click <a href='https://univision.show/voteConfirmation/?code=${votes[0].verificationCode}'>Verify</a> to confirm your vote.<br />Or go to: https://univision.show/voteConfirmation/?code=${votes[0].verificationCode}<br /><br />We hope you have enjoyed the show.`
   };
-  log(mailOptions, "A");
+  logObj('Mail options', mailOptions, "A");
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {
-      log(error, "E");
+      logs.error('Error sending email', error);
     } else {
       log(`Email sent: ${info.response}`);
     }
@@ -715,7 +691,7 @@ function doPing() {
         counts.alive++;
         let payload = {};
         payload.type = "ping";
-        client.send(JSON.stringify(payload));
+        sendData(client, payload);
         client.pingStatus = "pending";
       } else if (client.pingStatus == "pending") {
         client.pingStatus = "dead";
@@ -735,10 +711,10 @@ function countTotals() {
   for (const act in acts) {
     if (acts.hasOwnProperty(act)) {
       const PK = acts[act].PK;
-      SQL.query(`SELECT act, count(act) as 'count' FROM \`main_votes\` WHERE verified=1 AND enabled=1 AND fromUni = ${PK} AND act IS NOT NULL GROUP by act`).then((rows)=>{
+      SQL.query(`SELECT act, count(act) as 'count' FROM \`main_votes\` WHERE verified=1 AND enabled=1 AND fromUni = ${PK} AND act IS NOT NULL GROUP by act`).then(rows => {
         const tots = {};
         rows.forEach(row => {
-          tots[row.act] = row.count;
+          tots[row.act] = Number(row.count);
         });
         sendAdmins({
           "type":"voteTotal",
@@ -752,7 +728,7 @@ function countTotals() {
   SQL.query("SELECT act, count(act) as 'count' FROM `main_votes` WHERE verified=1 AND enabled=1 AND act IS NOT NULL GROUP by act").then((rows)=>{
     const tots = {};
     rows.forEach(row => {
-      tots[row.act] = row.count;
+      tots[row.act] = Number(row.count);
     });
     sendAdmins({
       "type":"voteTotals",
@@ -760,4 +736,31 @@ function countTotals() {
     });
     log("Counted Totals");
   });
+}
+
+
+
+
+
+
+function makeHeader(intType = type, intVersion = version) {
+	let header = {};
+	header.fromID = serverID;
+	header.timestamp = new Date().getTime();
+	header.version = intVersion;
+	header.type = intType;
+	header.active = true;
+	header.messageID = header.timestamp;
+	header.recipients = [
+		config.get('host')
+	];
+	return header;
+}
+
+function sendData(connection, payload) {
+	let packet = {};
+	let header = makeHeader();
+	packet.header = header;
+	packet.payload = payload;
+	connection.send(JSON.stringify(packet));
 }

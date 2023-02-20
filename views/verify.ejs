@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>Verify</title>
+	<link rel="stylesheet" id="vote_css" href="/css/vote.css" type="text/css" media="all">
+	<link rel="stylesheet" id="univision_css" href="/css/univision.css" type="text/css" media="all">
+	<script>
+		const confirmation = true;
+		const host = "<%- host %>";
+		const version = "<%- version %>";
+	</script>
+	<script type="text/javascript" id="jQuery_js" src="/js/jQuery.js"></script>
+	<script type="text/javascript" id="vote_js" src="/js/config.js"></script>
+	<script type="text/javascript" id="vote_js" src="/js/vote.js"></script>
+	<script type="text/javascript" id="ws_js" src="/js/ws.js"></script>
+	<script type="text/javascript" id="cookie_js" src="/js/cookie.js"></script>
+</head>
+
+<body>
+	<main id="main" class="site-main disconnected">
+
+		<header id="vote_header" style="opacity: 1;">
+			Univision 2023 voting
+		</header>
+		<section id="vote_confirming" class="hidden_right">
+			<div>Verifying your vote...</div>
+		</section>
+		  
+		<section id="vote_confirm" class="hidden_right">
+			<div>Thank you for voting in UniVision 2021, your vote has been verified</div>
+		</section>
+	</main>
+</body>
+
+</html>

@@ -1,0 +1,253 @@
+.wrapper {
+	padding-top: 10px !important
+  }
+  
+  .vote_bttn_active {
+	background-color: #fff;
+	color: #00011e
+  }
+  
+  #vAdmin_autoCont {
+	float: right
+  }
+  
+  #vAdmin_feed_cont {
+	max-height: 500px;
+	overflow: auto;
+	margin-top: 30px
+  }
+  
+  #vAdmin_feed_table {
+	margin-bottom: 5px
+  }
+  
+  #vAdmin_feed_table th,
+  .adminTable th {
+	border-bottom: rgba(26, 79, 151, .15) solid 4px;
+	padding: 10px 24px;
+	font-weight: 700;
+	border-top: none;
+	padding-right: 10px;
+	margin: 0;
+	font-size: 16px;
+	line-height: 1;
+	top: 0;
+	background-color: #323234;
+	color: #e1e1e1;
+	z-index: 1
+  }
+  
+  #vAdmin_feed_table th {
+	position: sticky
+  }
+  
+  #vAdmin_feed_table td,
+  .adminTable td {
+	vertical-align: middle;
+	padding: 0;
+	border-bottom: 1px solid rgba(40, 40, 40, 0.7);
+	margin: 0;
+	font-size: 16px;
+	line-height: 1;
+  }
+  
+  #vAdmin_feed_table td {
+	padding: 5px;
+  }
+  
+  #vAdmin_feed_table tbody tr:nth-of-type(2n+1),
+  .adminTable tbody tr:nth-of-type(2n+1) {
+	background-color: rgb(29, 29, 31);
+  }
+  
+  #vAdmin_feed_table tbody,
+  .adminTable tbody {
+	background-color: rgb(9, 9, 9);
+	color: rgb(255, 255, 255);
+  }
+  
+  td {
+	position: relative
+  }
+  
+  #voteActs_cont {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #00000069;
+	z-index: 200
+  }
+  
+  #voteActs_pop {
+	text-align: center;
+	background: #000;
+	border-radius: 10px;
+	padding-bottom: 30px;
+	border: solid 1px rgb(96, 96, 96);
+	overflow: hidden;
+	margin: 10px;
+  }
+  
+  .voteActs_input {
+	width: 100%;
+	color: rgb(255, 255, 255);
+	border: none;
+	background: 0 0;
+	padding-left: 0.5em;
+  }
+  
+  .voteActs_delete {
+	border: none;
+	width: 100%;
+	background-color: rgb(144, 0, 0);
+	border-radius: 0;
+	padding: 8px;
+  }
+  
+  .voteActs_changed {
+	background-color: rgb(47, 48, 121);
+  }
+  
+  .voteActs_changed_row {
+	background-color: rgb(14, 22, 52);
+  }
+  
+  .vAdmin_enabled_yes,
+  .vAdmin_verify_yes {
+	background-color: rgba(77, 216, 0, .12)
+  }
+  
+  .vAdmin_verify_no,
+  .vAdmin_enabled_no_tr {
+	background: rgba(255, 0, 0, .15) !important
+  }
+  
+  .vAdmin_enabled_no {
+	background: rgba(255, 0, 0, .45)
+  }
+  
+  .vAdmin_verify_yes::before {
+	content: "Unverify?"
+  }
+  
+  .vAdmin_verify_no::before {
+	content: "Verify?"
+  }
+  
+  .vAdmin_enabled_yes::before {
+	content: "Un-count?"
+  }
+  
+  .vAdmin_enabled_no::before {
+	content: "Count?"
+  }
+  
+  .vAdmin_ban_no::before {
+	content: "Ban IP?"
+  }
+  
+  .vAdmin_ban_yes::before {
+	content: "Un-ban IP?"
+  }
+  
+  .vAdmin_verify_yes::before,
+  .vAdmin_verify_no::before,
+  .vAdmin_enabled_yes::before,
+  .vAdmin_enabled_no::before,
+  .vAdmin_ban_yes::before,
+  .vAdmin_ban_no::before {
+	position: absolute;
+	transition: .3s;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	width: calc(100%);
+	height: calc(100%);
+	background: transparent;
+	color: transparent;
+	text-align: center;
+	padding: 8px 0;
+	margin: 0;
+	z-index: 1;
+	border-radius: 5px;
+	border: 2px solid #ccc;
+	cursor: pointer
+  }
+  
+  .vAdmin_verify_yes:hover::before,
+  .vAdmin_verify_no:hover::before,
+  .vAdmin_enabled_yes:hover::before,
+  .vAdmin_enabled_no:hover::before,
+  .vAdmin_ban_yes:hover::before,
+  .vAdmin_ban_no:hover::before {
+	opacity: 1;
+	width: calc(100% + 10px);
+	height: calc(100% + 10px);
+	background: rgb(173, 144, 250);
+	color: #000;
+	margin: -5px
+  }
+  
+  .vAdmin_ban_yes {
+	background: #ff6464
+  }
+  
+  .vAdmin_ban_no:hover::before {
+	background: #ff6464
+  }
+  
+  .vAdmin_ban_yes:hover::before {
+	background: #64ff64
+  }
+  
+  * {
+	transition: .3s
+  }
+  
+  #vAdmin_totals {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+	margin-right: -20px;
+  }
+  
+  .pubTotals table {
+	background-color: rgb(9, 9, 9);
+	color: rgb(255, 255, 255);
+	font-size: 11pt
+  }
+  
+  .pubTotals tbody td {
+	padding: 5px 10px;
+	border-bottom: 1px solid rgb(34, 34, 34);
+  }
+  
+  .pubTotals thead th {
+	padding: 5px 10px
+  }
+  
+  .pubTotals thead tr {
+	background-color: #323234;
+	color: #e1e1e1
+  }
+  
+  .pubTotals tbody tr:nth-of-type(2n+1) {
+	background-color: rgb(29, 29, 31);
+  }
+  
+  .pubTotals {
+	margin-right: 20px;
+	flex: auto;
+  }
+  
+  .totals {
+	display: flex;
+	margin-right: -20px;
+  }
+  
+  .hidden {
+	display: none
+  }
+  

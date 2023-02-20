@@ -1,0 +1,178 @@
+#vote_header {
+	font-size: 200%;
+	text-align: center;
+	opacity: 0;
+	transition: .5s;
+	padding: 30px
+}
+
+#vote_email {
+	display: table-cell;
+	width: 400px;
+	padding: 7px 15px;
+	margin: 0;
+	font-size: 90%;
+	text-align: center
+}
+
+#vote_email_cont {
+	display: table;
+	padding-top: 40px;
+	padding-bottom: 50px
+}
+
+#vote_email_extension {
+	display: table-cell;
+	padding-left: 7px
+}
+
+#vote_alternate_button {
+	margin-top: 35px
+}
+
+.vote_submit {
+	padding: 30px 50px;
+	font-size: 160%;
+	padding-bottom: 24px;
+	position: absolute;
+	left: 50%;
+	top: 65px;
+	transform: translateX(-50%);
+	background-color: rgba(0, 1, 30, .63);
+	opacity: 0;
+	pointer-events: none;
+	transition: .5s
+}
+
+.act_selected .vote_submit {
+	opacity: 1;
+	pointer-events: all
+}
+
+.hidden_right,
+.hidden_left {
+	opacity: 0 !important;
+	transition: .2s;
+	position: relative;
+	pointer-events: none;
+	height: 0 !important
+}
+
+.hidden_right {
+	left: 200px !important
+}
+
+.hidden_left {
+	left: -200px !important
+}
+
+#vote_early,
+#vote_closed,
+#vote_select,
+#vote_verify,
+#vote_alternate,
+#vote_choose,
+#vote_thanks,
+#vote_already,
+#vote_confirming,
+#vote_confirm {
+	opacity: 1;
+	transition: height 0s .2s, .2s;
+	left: 0;
+	position: relative;
+	top: 0;
+	overflow: visible;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	z-index: 2
+}
+
+#vote_alternate_cont>div {
+	display: table-row
+}
+
+#vote_alternate_cont>div>* {
+	display: table-cell;
+	padding: 10px
+}
+
+#vote_alternate_txt {
+	padding: 20px
+}
+
+#vote_alternate_cont {
+	padding-bottom: 30px
+}
+
+#vote_row {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center
+}
+
+.vote_act {
+	min-width: 300px;
+	max-width: calc(50% - 20px);
+	cursor: pointer;
+	position: relative;
+	background-color: #fff;
+	margin: 10px;
+	max-height: 300px;
+	overflow: hidden
+}
+
+.vote_act img {
+	pointer-events: none;
+	transition: .3s
+}
+
+.vote_act_text {
+	position: absolute;
+	bottom: 30px;
+	left: 50%;
+	transform: translateX(-50%);
+	font-size: 200%;
+	color: #fff;
+	font-weight: 700;
+	pointer-events: none;
+	white-space: nowrap
+}
+
+.act_selected img {
+	opacity: .7
+}
+
+.vote_choose_uni {
+	width: 21%;
+	padding: 10px;
+	border: 0;
+	border-radius: 100%;
+	min-width: 155px
+}
+
+.vote_choose_uni>img {
+	pointer-events: none
+}
+
+.vote_uni_logo img {
+	height: 250px
+}
+
+.vote_uni_logo {
+	margin-bottom: 0
+}
+
+.site-header {
+	z-index: 11
+}
+
+#colophon {
+	display: none
+}
+
+.fromUni {
+	padding-bottom: 50px;
+	padding-top: 20px
+}
