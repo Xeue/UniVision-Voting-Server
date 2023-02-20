@@ -293,7 +293,7 @@ async function startServers() {
     socket.on('close', function() {
       try {
         let oldId = JSON.parse(JSON.stringify(socket.ID));
-        log(`${r}${oldId}${reset} Connection closed`, "D");
+        log(`${logs.r}${oldId}${logs.reset} Connection closed`, "D");
         socket.connected = false;
       } catch (e) {
         log("Could not end connection cleanly","E");
@@ -327,16 +327,16 @@ async function handleRoot(request, response) {
 }
 
 function commandAdmin(msgObj, socket) {
-  log(`Client asking server to run command: ${b}${msgObj.command}${w}`, "D");
+  log(`Client asking server to run command: ${logs.b}${msgObj.command}${logs.w}`, "D");
   switch (msgObj.command) {
     case "status":
       let colour;
       if (msgObj.status == "OPEN") {
-        colour = g;
+        colour = logs.g;
       } else {
-        colour = r;
+        colour = logs.r;
       }
-      log(`Setting status to: ${colour}${msgObj.status}${w}`, "D");
+      log(`Setting status to: ${colour}${msgObj.status}${logs.w}`, "D");
       SQL.query(`UPDATE \`main_status\` SET \`status\`='${msgObj.status}';`).then((rows)=>{
         log("Updated voting status", "D");
         config.set('status', msgObj.status);
