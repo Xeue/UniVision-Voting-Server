@@ -31,17 +31,14 @@
 }
 
 .vote_submit {
-	padding: 30px 50px;
 	font-size: 160%;
-	padding-bottom: 24px;
-	position: absolute;
-	left: 50%;
-	top: 65px;
-	transform: translateX(-50%);
 	background-color: rgba(0, 1, 30, .63);
 	opacity: 0;
 	pointer-events: none;
-	transition: .5s
+	transition: .5s;
+	grid-area: top;
+	margin-bottom: 16px;
+	margin-top: 20px;
 }
 
 .act_selected .vote_submit {
@@ -120,7 +117,16 @@
 	background-color: #fff;
 	margin: 10px;
 	max-height: 300px;
-	overflow: hidden
+	overflow: hidden;
+	display: grid;
+	grid-template-rows: 1fr 1fr;
+	grid-template-areas: "top" "bottom";
+	background-position: center;
+	background-size: cover;
+	padding: 2rem;
+	justify-items: center;
+	align-items: center;
+	width: 30%;
 }
 
 .vote_act img {
@@ -129,15 +135,11 @@
 }
 
 .vote_act_text {
-	position: absolute;
-	bottom: 30px;
-	left: 50%;
-	transform: translateX(-50%);
 	font-size: 200%;
 	color: #fff;
 	font-weight: 700;
 	pointer-events: none;
-	white-space: nowrap
+	grid-area: bottom;
 }
 
 .act_selected img {

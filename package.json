@@ -1,6 +1,6 @@
 {
   "name": "voting-node",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "The server application for for Sam Chilton's UniVision voting system",
   "main": "voteServer.js",
   "scripts": {
@@ -15,10 +15,10 @@
     "ejs": "^3.1.8",
     "express": "^4.18.2",
     "mysql": "^2.18.1",
-    "nodemailer": "^6.7.2",
-    "ws": "^8.4.2",
+    "nodemailer": "^6.9.1",
+    "ws": "^8.12.1",
     "xeue-config": "^1.5.3",
     "xeue-logs": "^1.7.4",
-    "xeue-sql": "^1.1.0"
+    "xeue-sql": "^2.0.2"
   }
 }

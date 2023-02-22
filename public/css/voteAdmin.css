@@ -3,9 +3,12 @@
   }
   
   .vote_bttn_active {
-	background-color: #fff;
-	color: #00011e
+	background-color: rgb(41, 134, 73);
+	color: rgb(255, 255, 255);
   }
+#voteActs_close, #voteActs_save, #voteActs_new {
+  font-size: 1em;
+}
   
   #vAdmin_autoCont {
 	float: right
@@ -14,7 +17,7 @@
   #vAdmin_feed_cont {
 	max-height: 500px;
 	overflow: auto;
-	margin-top: 30px
+	margin-top: 10px;
   }
   
   #vAdmin_feed_table {
@@ -24,17 +27,17 @@
   #vAdmin_feed_table th,
   .adminTable th {
 	border-bottom: rgba(26, 79, 151, .15) solid 4px;
-	padding: 10px 24px;
+	padding: 10px;
 	font-weight: 700;
 	border-top: none;
-	padding-right: 10px;
 	margin: 0;
 	font-size: 16px;
 	line-height: 1;
 	top: 0;
 	background-color: #323234;
 	color: #e1e1e1;
-	z-index: 1
+	z-index: 1;
+	white-space: nowrap;
   }
   
   #vAdmin_feed_table th {
@@ -50,14 +53,14 @@
 	font-size: 16px;
 	line-height: 1;
   }
-  
+
   #vAdmin_feed_table td {
 	padding: 5px;
   }
   
   #vAdmin_feed_table tbody tr:nth-of-type(2n+1),
   .adminTable tbody tr:nth-of-type(2n+1) {
-	background-color: rgb(29, 29, 31);
+	background-color: rgb(16, 16, 16);
   }
   
   #vAdmin_feed_table tbody,
@@ -85,7 +88,7 @@
 	background: #000;
 	border-radius: 10px;
 	padding-bottom: 30px;
-	border: solid 1px rgb(96, 96, 96);
+	border: solid 1px rgb(34, 34, 34);
 	overflow: hidden;
 	margin: 10px;
   }
@@ -100,11 +103,51 @@
   
   .voteActs_delete {
 	border: none;
-	width: 100%;
+	width: calc(100% - 8px);
 	background-color: rgb(144, 0, 0);
-	border-radius: 0;
+	border-radius: 6px;
 	padding: 8px;
   }
+
+  .voteActs_move {
+	border: none;
+	background-color: rgb(49, 49, 49);
+	padding: 0;
+	border-radius: 50%;
+	width: 2rem;
+	height: 2rem;
+	border-bottom: 1px solid rgb(67, 67, 67);
+	color: rgb(158, 158, 158);
+	transition: 0.3s;
+	flex: 0;
+	flex-basis: 2rem;
+  }
+
+#voteActs_table tr:first-child .voteActs_move[data-direction="up"],
+#voteActs_table tr:last-child .voteActs_move[data-direction="down"]{
+  cursor: not-allowed;
+  background: rgb(75, 75, 75);
+  color: rgb(126, 126, 126);
+  pointer-events: none;
+  opacity: 0;
+}
+
+input.voteActs_place {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  background: none !important;
+  flex: 0;
+  text-align: center;
+  min-width: 40px;
+}
+
+.voteActs_cont {
+  display: flex;
+  justify-content: center;
+  min-height: 50px;
+  align-items: center;
+}
   
   .voteActs_changed {
 	background-color: rgb(47, 48, 121);
@@ -172,7 +215,7 @@
 	margin: 0;
 	z-index: 1;
 	border-radius: 5px;
-	border: 2px solid #ccc;
+	/*! border: 1px solid rgb(60, 60, 60); */
 	cursor: pointer
   }
   
@@ -183,11 +226,11 @@
   .vAdmin_ban_yes:hover::before,
   .vAdmin_ban_no:hover::before {
 	opacity: 1;
-	width: calc(100% + 10px);
-	height: calc(100% + 10px);
-	background: rgb(173, 144, 250);
-	color: #000;
-	margin: -5px
+	width: calc(100% + 4px);
+	height: calc(100% + 4px);
+	background: rgb(40, 72, 196);
+	color: rgb(253, 253, 253);
+	margin: -2px;
   }
   
   .vAdmin_ban_yes {
@@ -195,7 +238,7 @@
   }
   
   .vAdmin_ban_no:hover::before {
-	background: #ff6464
+	background: rgb(149, 38, 38);
   }
   
   .vAdmin_ban_yes:hover::before {
@@ -234,7 +277,7 @@
   }
   
   .pubTotals tbody tr:nth-of-type(2n+1) {
-	background-color: rgb(29, 29, 31);
+	background-color: rgb(16, 16, 16);
   }
   
   .pubTotals {
@@ -251,3 +294,10 @@
 	display: none
   }
   
+table {
+	border-radius: 5px;
+}
+
+tr,td,table {
+	border: none !important;
+}

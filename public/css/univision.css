@@ -2,6 +2,9 @@
 main {
 	background-color: rgb(16, 16, 16);
 	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding: 10px;
 }
 a,.contact-details .contact-details-icon-wrapper,#gallery-section .tiled-gallery .tiled-gallery-item a:before {
  -webkit-transition:all .25s ease-in-out;
@@ -1232,14 +1235,14 @@ input[type=submit][disabled]:focus,
 .hero-section .more-link .readmore,
 #content #infinite-handle span button,
 nav.navigation.posts-navigation .nav-links a {
- border-radius:8px;
- border:solid 1px;
+ border-radius:6px;
+ border:solid 0px;
  cursor:pointer;
  display:inline-block;
- font-weight:600;
+ /*! font-weight:600; */
  letter-spacing:0;
- line-height:1.5;
- text-transform:capitalize
+ /*! line-height:1.5; */
+ text-transform:capitalize;
 }
 button:hover,
 button:focus,
@@ -4879,7 +4882,7 @@ nav.navigation.posts-navigation .nav-links a,
 .hero-section .more-link .readmore,
 #feature-slider-section .more-link .readmore,
 .more-link .readmore {
- padding:13px 35px;
+ padding:0.5rem 1rem;
 }
 .entry-meta .icon {
  margin-right:7px
@@ -7374,7 +7377,7 @@ body:not(.home) .custom-header-content .custom-header-content-wrapper {
  .catch-instagram-feed-gallery-widget-wrapper .button,
  #footer-newsletter .ewnewsletter .hentry form input[type=submit] {
   font-size:21px;
-  font-size:1.3125rem
+  font-size:1.3125rem;
  }
  .home .header-media .section-title,
  #feature-slider-section .entry-title,
@@ -7947,7 +7950,7 @@ nav.navigation.posts-navigation .nav-links a:focus,
 .woocommerce a.button:focus,
 .woocommerce button.button:hover,
 .woocommerce button.button:focus {
- background-color:#d98e4a
+ background-color:rgb(53, 53, 53);
 }
 .scroll-down,
 .section .owl-carousel .owl-dots button,

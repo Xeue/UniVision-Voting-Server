@@ -30,12 +30,17 @@ const type = 'Server';
 	config.require('serverName', [], 'Please name this server');
 	config.require('loggingLevel', {'A':'All', 'D':'Debug', 'W':'Warnings', 'E':'Errors'}, 'Set logging level');
 	config.require('createLogFile', {true: 'Yes', false: 'No'}, 'Save logs to local file');
-	config.require('countOnVerify', [], 'Recount votes everytime a new vote is verified (can cause perfomance issues)');
+	config.require('countOnVerify', {true: 'Yes', false: 'No'}, 'Recount votes everytime a new vote is verified (can cause perfomance issues)');
   config.require('status', {'OPEN': 'Open', 'EARLY': 'Early', 'CLOSED': 'Closed'}, 'The current status of voting');
+  config.require('adminUsername', [], 'Please set a username for the admin page');
+  config.require('adminPassword', [], 'Please set a password for the admin page');
 
-  config.require('emailService', [], 'Email provider (https://nodemailer.com/smtp/well-known/)');
-  config.require('emailUser', [], 'Username');
-  config.require('emailPass', [], 'Password');
+  config.require('emailEnabled', {true: 'Yes', false: 'No'}, 'Require verification via email');
+  { 
+    config.require('emailService', [], 'Email provider (https://nodemailer.com/smtp/well-known/)', ['emailEnabled', true]);
+    config.require('emailUser', [], 'Username', ['emailEnabled', true]);
+    config.require('emailPass', [], 'Password', ['emailEnabled', true]);
+  }
 
   config.require('dbHost', [], 'Database address');
   config.require('dbPort', [], 'Database port');
@@ -63,6 +68,8 @@ const type = 'Server';
   config.default('dbUser', 'univision');
   config.default('dbDatabase', 'univision');
   config.default('status', 'OPEN');
+  config.default('emailUser', 'admin');
+  config.default('emailEnabled', false);
 
 	if (!await config.fromFile(__dirname + '/config.conf')) {
 		await config.fromCLI(__dirname + '/config.conf');
@@ -129,7 +136,7 @@ const tables = [
       \`uniLongName\` text NOT NULL,
       \`uniShortName\` text NOT NULL,
       \`uniImage\` text NOT NULL,
-      \`uniEmail\` text NOT NULL,
+      \`actOrder\` int(11) NOT NULL,
       \`actName\` text NOT NULL,
       \`actImage\` text NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=latin1;`,
@@ -172,8 +179,7 @@ const SQL = new SQLSession(
   config.get('dbUser'), 
   config.get('dbPass'), 
   config.get('dbDatabase'),
-  logs,
-  tables
+  logs
 );
 
 await SQL.init(tables);
@@ -200,7 +206,7 @@ async function startServers() {
 	});
 
 
-  acts = await SQL.query('SELECT * FROM main_acts;');
+  acts = await SQL.query('SELECT * FROM main_acts ORDER BY `actOrder` ASC;;');
   log("Loaded acts info");
   startLoops();
 
@@ -208,19 +214,7 @@ async function startServers() {
   serverWS.on('connection', async (socket, req) => {
     log("New connection established, sending it meta data", "D");
 
-    acts = await SQL.query('SELECT * FROM main_acts;');
-    const actsData = {};
-    acts.forEach(act => {
-      actsData[act.PK] = {
-        email: act.uniEmail,
-        logo: act.uniImage,
-        name: act.uniLongName,
-        short: act.uniShortName,
-        act: act.actName,
-        actImage: act.actImage
-      };
-    });
-
+    const actsData = await getActsObject();
     const statusData = await SQL.query('SELECT `status` FROM main_status;');
     const bansData = await SQL.query('SELECT `IP` FROM main_bans;');
     const IPs = [];
@@ -339,11 +333,19 @@ async function handleRoot(request, response) {
 
 async function handleAdmin(request, response) {
 	log('Serving admin page', 'A');
-	response.header('Content-type', 'text/html');
-	response.render('admin', {
-    host: config.get('host'),
-    version: version
-  });
+  const b64auth = (request.headers.authorization || '').split(' ')[1] || '';
+  const [login, password] = Buffer.from(b64auth, 'base64').toString().split(':');
+
+  if (login && password && login === config.get('adminUsername') && password === config.get('adminPassword')) {
+    response.header('Content-type', 'text/html');
+    response.render('admin', {
+      host: config.get('host'),
+      version: version
+    });
+  } else {
+    response.set('WWW-Authenticate', 'Basic realm="401"');
+    response.status(401).send('Authentication required.');
+  }
 }
 
 async function handleVerify(request, response) {
@@ -472,14 +474,13 @@ async function commandVote(msgObj, socket, req) {
   const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
   const socketIP = req.headers['cf-connecting-ip'] || req.socket.remoteAddress;
   const bans = await SQL.query(`SELECT IP FROM main_bans WHERE IP='${socketIP}'`);
-
   const verifyCode = date+msgObj.act+socketIP+msgObj.PK;
-
+  const verified = config.get('emailEnabled') ? 0 : 1;
   const voteData = {
     "act": msgObj.act,
     "dateVote": `'${date}'`,
     "enabled": 1,
-    "verified": 0,
+    "verified": verified,
     "IP": `'${socketIP}'`,
     "verificationCode": verifyCode.replace(/\D/g,"")
   };
@@ -514,27 +515,16 @@ async function commandEdit(msgObj, socket) {
   log(`Client asking server to edit acts`, "D");
   switch (msgObj.command) {
     case "new":
+      const last = await SQL.getN('','actOrder',1,'main_acts');
       await SQL.insert({
         "uniLongName":"Full name",
         "uniShortName":"Short name",
         "uniImage":"URL of the Uni image",
-        "uniEmail":"Email extension of the Uni",
+        "actOrder":Number(last[0].actOrder)+1,
         "actName":"The acts name",
         "actImage":"URL of the acts image"
       }, "main_acts");
-      acts = await SQL.query('SELECT * FROM main_acts;');
-      const data = {};
-      acts.forEach(act => {
-        data[act.PK] = {
-          email: act.uniEmail,
-          logo: act.uniImage,
-          name: act.uniLongName,
-          short: act.uniShortName,
-          act: act.actName,
-          actImage: act.actImage
-        };
-      });
-      sendAll(`{"type":"voteActs","data":${JSON.stringify(data)}}`);
+      await sendActsObject();
       break;
     case "save":
       const actsData = msgObj.data;
@@ -542,44 +532,22 @@ async function commandEdit(msgObj, socket) {
         if (actsData.hasOwnProperty(actPK)) {
           let actData = actsData[actPK];
           let updateData = {};
-          if (actData.email) {updateData.uniEmail = actData.email;}
           if (actData.logo) {updateData.uniImage = actData.logo;}
           if (actData.name) {updateData.uniLongName = actData.name;}
           if (actData.short) {updateData.uniShortName = actData.short;}
+          if (actData.order) {updateData.actOrder = actData.order;}
           if (actData.act) {updateData.actName = actData.act;}
           if (actData.actImage) {updateData.actImage = actData.actImage;}
           await SQL.update(updateData, {'PK':actPK}, "main_acts");
         }
       }
-      acts = await SQL.query('SELECT * FROM main_acts;');
-      acts.forEach(act => {
-        data[act.PK] = {
-          email: act.uniEmail,
-          logo: act.uniImage,
-          name: act.uniLongName,
-          short: act.uniShortName,
-          act: act.actName,
-          actImage: act.actImage
-        };
-      });
-      sendAll(`{"type":"voteActs","data":${JSON.stringify(data)}}`);
+      await sendActsObject();
       break;
     case "delete":
       await SQL.query(`DELETE FROM main_acts WHERE PK='${msgObj.PK}'`);
-      await SQL.query(`DELETE FROM main_acts WHERE act='${msgObj.PK}'`);
-      await SQL.query(`DELETE FROM main_acts WHERE fromUni='${msgObj.PK}'`);
-      acts = await SQL.query('SELECT * FROM main_acts;');
-      acts.forEach(act => {
-        data[act.PK] = {
-          email: act.uniEmail,
-          logo: act.uniImage,
-          name: act.uniLongName,
-          short: act.uniShortName,
-          act: act.actName,
-          actImage: act.actImage
-        };
-      });
-      sendAll(`{"type":"voteActs","data":${JSON.stringify(data)}}`);
+      await SQL.query(`DELETE FROM main_votes WHERE act='${msgObj.PK}'`);
+      await SQL.query(`DELETE FROM main_votes WHERE fromUni='${msgObj.PK}'`);
+      await sendActsObject();
       break;
     default:
 
@@ -645,6 +613,7 @@ async function updateVoteAdmin(PK) {
 }
 
 async function verifyEmail(PK) {
+  if (!config.get('emailEnalbed')) return;
   const votes = await SQL.query(`SELECT * FROM \`main_votes\` WHERE \`PK\`='${PK}';`);
 
   const mailOptions = {
@@ -738,7 +707,27 @@ function countTotals() {
   });
 }
 
+async function sendActsObject() {
+  const data = await getActsObject();
+  sendAll(`{"type":"voteActs","data":${JSON.stringify(data)}}`);
+}
 
+async function getActsObject() {
+  acts = await SQL.query('SELECT * FROM main_acts ORDER BY `actOrder` ASC;');
+  const actsData = [];
+  acts.forEach(act => {
+    actsData.push({
+      logo: act.uniImage,
+      name: act.uniLongName,
+      short: act.uniShortName,
+      act: act.actName,
+      actImage: act.actImage,
+      order: act.actOrder,
+      PK: act.PK
+    });
+  });
+  return actsData;
+}
 
 
 

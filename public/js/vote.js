@@ -4,14 +4,14 @@ function buildVotes(UniObj) {
 	$('#vote_cUniCont').html("");
 	$('#vote_row').html("");
 	for (const Uni in UniObj) {
-		let $cont = $('<div class="vote_act"></div>');
+		let $cont = $(`<div class="vote_act" style="background-image:url(${UniObj[Uni].actImage});"></div>`);
 		$cont.prop("id", "vote_" + Uni);
-		let $img = $('<img>');
-		$img.prop("src", UniObj[Uni].actImage);
+		//let $img = $('<img>');
+		//$img.prop("src", UniObj[Uni].actImage);
 		let $bttn = $('<button class="vote_submit" type="button">Place Vote</button>');
 		let $lbl = $('<div class="vote_act_text"></div>');
 		$lbl.html(UniObj[Uni].act);
-		$cont.append($img);
+		//$cont.append($img);
 		$cont.append($bttn);
 		$cont.append($lbl);
 		$('#vote_row').append($cont);
@@ -118,7 +118,6 @@ function socketDoOpen(socket) {
 }
 
 function socketDoMessage(header, payload) {
-	console.log(payload);
 	if (payload.type == "voteRegistered") {
 		sessionPK = payload.PK;
 		$("#vote_verify").addClass("hidden_left");
