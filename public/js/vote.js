@@ -79,7 +79,7 @@ $(document).ready(function () {
 				let wsMsg = {};
 				wsMsg.type = "voteStart";
 				wsMsg.email = email;
-				wsMsg.fromUni = selectedUni;
+				wsMsg.fromUni = Number(selectedUni);
 				webConnection.send(wsMsg);
 			}
 		} else if ($target.is("#vote_next_alternate")) {
@@ -92,7 +92,7 @@ $(document).ready(function () {
 				wsMsg.type = "voteStart";
 				wsMsg.email = email;
 				wsMsg.code = code;
-				wsMsg.fromUni = selectedUni;
+				wsMsg.fromUni = Number(selectedUni);
 				webConnection.send(wsMsg);
 			}
 		} else if ($target.hasClass("vote_submit")) {
@@ -101,7 +101,7 @@ $(document).ready(function () {
 			} else {
 				let wsMsg = {};
 				wsMsg.type = "vote";
-				wsMsg.act = selected;
+				wsMsg.act = Number(selected);
 				wsMsg.PK = sessionPK;
 				webConnection.send(wsMsg);
 			}
