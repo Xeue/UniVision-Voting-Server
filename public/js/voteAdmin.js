@@ -23,8 +23,8 @@ function createRows(votesObj) {
 		$tr.data('dateVote', vote.dateVote);
 
 		$email = $('<td>' + vote.email + '</td>');
-		$uni = $('<td>' + uni[vote.fromUni].name + '</td>');
-		$act = $('<td>' + uni[vote.act].act + '</td>');
+		$uni = $('<td>' + getUni(vote.fromUni).name + '</td>');
+		$act = $('<td>' + getUni(vote.act).act + '</td>');
 		$verify = $('<td></td>');
 		if (vote.verified == "1") {
 			$verify.html("Yes");
@@ -72,6 +72,12 @@ let runningTotal = {};
 let allTots = {};
 let judgeTots = {};
 let webConnection;
+
+function getUni(PK) {
+	for (let index = 0; index < uni.length; index++) {
+		if (uni[index].PK = PK) return uni[index]
+	}
+}
 
 function renderTotal(totals) {
 	for (var act in uni) {
