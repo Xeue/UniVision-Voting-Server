@@ -43,7 +43,7 @@ $(document).ready(function () {
 
 	$("main").addClass("disconnected");
 	
-	const webConnection = new webSocket(host, 'Browser', version, false);
+	const webConnection = new webSocket(host, 'Browser', version, true);
 	webConnection.addEventListener('message', event => {
 		const [header, payload] = event.detail;
 		socketDoMessage(header, payload);
