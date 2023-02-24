@@ -621,8 +621,8 @@ async function verifyEmail(PK) {
     "to": votes[0].email,
     "subject": 'Univision Vote confirmation',
     "text": `Thank you for your vote!
-    Please click https://univision.show/voteConfirmation/?code=${votes[0].verificationCode} to confirm your vote.`,
-    "html": `Thank you for your vote!<br />Please click <a href='https://univision.show/voteConfirmation/?code=${votes[0].verificationCode}'>Verify</a> to confirm your vote.<br />Or go to: https://univision.show/voteConfirmation/?code=${votes[0].verificationCode}<br /><br />We hope you have enjoyed the show.`
+    Please click https://vote.univision.show/verify?code=${votes[0].verificationCode} to confirm your vote.`,
+    "html": `Thank you for your vote!<br />Please click <a href='https://vote.univision.show/verify?code=${votes[0].verificationCode}'>Verify</a> to confirm your vote.<br />Or go to: https://vote.univision.show/verify?code=${votes[0].verificationCode}<br /><br />We hope you have enjoyed the show.`
   };
   logObj('Mail options', mailOptions, "A");
   transporter.sendMail(mailOptions, function(error, info){
