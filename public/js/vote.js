@@ -20,6 +20,12 @@ function buildVotes(uniObj) {
 	})
 }
 
+function getUni(PK) {
+	for (let index = 0; index < uni.length; index++) {
+		if (uni[index].PK == PK) return uni[index]
+	}
+}
+
 function selectUni(uniID) {
 	$("#vote_closed").addClass("hidden_left");
 	$("#vote_early").addClass("hidden_left");
@@ -29,12 +35,6 @@ function selectUni(uniID) {
 	$("#vote_verify").removeClass("hidden_right");
 	$('#vote_' + uniID).remove();
 	$('.vote_uni_logo').children("img").prop("src", getUni(uniID).logo);
-}
-
-function getUni(PK) {
-	for (let index = 0; index < uni.length; index++) {
-		if (uni[index].PK == PK) return uni[index]
-	}
 }
 
 var selectedUni = 0;

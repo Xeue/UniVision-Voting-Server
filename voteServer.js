@@ -478,10 +478,10 @@ async function commandVote(msgObj, socket, req) {
   const verified = config.get('emailEnabled') ? 0 : 1;
   const voteData = {
     "act": msgObj.act,
-    "dateVote": `'${date}'`,
+    "dateVote": date,
     "enabled": 1,
     "verified": verified,
-    "IP": `'${socketIP}'`,
+    "IP": socketIP,
     "verificationCode": verifyCode.replace(/\D/g,"")
   };
 
