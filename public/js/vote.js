@@ -39,7 +39,7 @@ $(document).ready(function () {
 
 	$("main").addClass("disconnected");
 	
-	const webConnection = new webSocket(host, 'Browser', version, false);
+	const webConnection = new webSocket(host, 'Browser', version, true);
 	webConnection.addEventListener('message', event => {
 		const [header, payload] = event.detail;
 		socketDoMessage(header, payload);
@@ -52,7 +52,7 @@ $(document).ready(function () {
 		$('main').addClass('disconnected');
 	});
 
-	var selected = false;
+	let selected = false;
 	$("#vote_header").css("opacity", 1);
 	$(document).click(function (e) {
 		$target = $(e.target);
