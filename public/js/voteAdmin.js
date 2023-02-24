@@ -90,7 +90,7 @@ function renderTotal(totals) {
 	for (var variable in totals) {
 		if (totals.hasOwnProperty(variable)) {
 			let $blockCont = $("<section id='pubTotal" + variable + "' class='pubTotals'></section>");
-			let $title = $("<div class='pubTitle'>" + uni[variable].name + "</div>");
+			let $title = $("<div class='pubTitle'>" + getUni(variable).name + "</div>");
 			let $table = $("<table><thead><th>Act</th><th>Total</th><th>Points</th></thead></table>");
 			let $tbody = $("<tbody></tbody>");
 			let tots = totals[variable];
@@ -119,18 +119,16 @@ function renderTotal(totals) {
 					for (var j = 0; j < rank.length; j++) {
 						pubVotes[rank[j]] += points;
 						unis.push(rank[j]);
-						let $tr = $("<tr data-points='" + points + "'><td>" + uni[rank[j]].short + "</td><td>" + (i - 1) + "</td><td>" + points + "</td></tr>");
+						let $tr = $("<tr data-points='" + points + "'><td>" + getUni(rank[j]).short + "</td><td>" + (i - 1) + "</td><td>" + points + "</td></tr>");
 						$tbody.append($tr);
 					}
 					points = points - tie;
 				}
 			}
-			for (var acts in uni) {
-				if (uni.hasOwnProperty(acts) && !unis.includes(acts)) {
-					let $etr = $(`<tr data-points='0'><td>${uni[acts].short}</td><td>0</td><td>0</td></tr>`);
-					$tbody.append($etr);
-				}
-			}
+			uni.forEach(act => {
+				const $etr = $(`<tr data-points='0'><td>${act.short}</td><td>0</td><td>0</td></tr>`);
+				$tbody.append($etr);
+			})
 			let $trr = $("<tr></tr>");
 			let $tfh = $("<td>Total Votes</td>");
 			let $tfr = $("<td colspan='2'></td>");
@@ -327,7 +325,7 @@ $(document).ready(function () {
 
 	$("main").addClass("disconnected");
 
-	webConnection = new webSocket(host, 'Browser', version, true);
+	webConnection = new webSocket(host, 'Browser', version, false);
 	webConnection.addEventListener('message', event => {
 		const [header, payload] = event.detail;
 		socketDoMessage(header, payload);

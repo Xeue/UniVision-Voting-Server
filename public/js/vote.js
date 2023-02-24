@@ -1,45 +1,49 @@
 var $ = jQuery;
 
-function buildVotes(UniObj) {
+function buildVotes(uniObj) {
 	$('#vote_cUniCont').html("");
 	$('#vote_row').html("");
-	for (const Uni in UniObj) {
-		let $cont = $(`<div class="vote_act" style="background-image:url(${UniObj[Uni].actImage});"></div>`);
-		$cont.prop("id", "vote_" + Uni);
-		//let $img = $('<img>');
-		//$img.prop("src", UniObj[Uni].actImage);
+	uniObj.forEach(uni => {
+		let $cont = $(`<div class="vote_act" style="background-image:url(${uni.actImage});"></div>`);
+		$cont.prop("id", "vote_" + uni.PK);
 		let $bttn = $('<button class="vote_submit" type="button">Place Vote</button>');
 		let $lbl = $('<div class="vote_act_text"></div>');
-		$lbl.html(UniObj[Uni].act);
-		//$cont.append($img);
+		$lbl.html(uni.act);
 		$cont.append($bttn);
 		$cont.append($lbl);
 		$('#vote_row').append($cont);
 		let $uniImg = $('<img>');
-		$uniImg.prop("src", UniObj[Uni].logo);
-		let $uniBttn = $("<button type='button' class='vote_choose_uni' id='vote_chUni_" + Uni + "'></button>");
+		$uniImg.prop("src", uni.logo);
+		let $uniBttn = $("<button type='button' class='vote_choose_uni' id='vote_chUni_" + uni.PK + "'></button>");
 		$uniBttn.append($uniImg);
 		$('#vote_cUniCont').append($uniBttn);
-	}
+	})
 }
 
 function selectUni(uniID) {
 	$("#vote_closed").addClass("hidden_left");
 	$("#vote_early").addClass("hidden_left");
 	$("#vote_select").addClass("hidden_left");
-	$('#vote_email_extension').html(uni[selectedUni].email);
-	$('#vote_uni_name').html(uni[selectedUni].name);
+	$('#vote_email_extension').html(getUni(uniID).email);
+	$('#vote_uni_name').html(getUni(uniID).name);
 	$("#vote_verify").removeClass("hidden_right");
-	$('#vote_' + selectedUni).remove();
-	$('.vote_uni_logo').children("img").prop("src", uni[selectedUni].logo);
+	$('#vote_' + uniID).remove();
+	$('.vote_uni_logo').children("img").prop("src", getUni(uniID).logo);
 }
+
+function getUni(PK) {
+	for (let index = 0; index < uni.length; index++) {
+		if (uni[index].PK == PK) return uni[index]
+	}
+}
+
 var selectedUni = 0;
 
 $(document).ready(function () {
 
 	$("main").addClass("disconnected");
 	
-	const webConnection = new webSocket(host, 'Browser', version, true);
+	const webConnection = new webSocket(host, 'Browser', version, false);
 	webConnection.addEventListener('message', event => {
 		const [header, payload] = event.detail;
 		socketDoMessage(header, payload);
