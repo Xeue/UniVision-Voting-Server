@@ -123,16 +123,19 @@ function renderTotal(totals) {
 					points = points - tie;
 					for (var j = 0; j < rank.length; j++) {
 						pubVotes[rank[j]] += points;
-						unis.push(rank[j]);
-						let $tr = $("<tr data-points='" + points + "'><td>" + getUni(rank[j]).short + "</td><td>" + (i - 1) + "</td><td>" + points + "</td></tr>");
+						const name = getUni(rank[j]).short;
+						unis.push(name);
+						let $tr = $("<tr data-points='" + points + "'><td>" + name + "</td><td>" + (i - 1) + "</td><td>" + points + "</td></tr>");
 						$tbody.append($tr);
 					}
 					points = points - tie;
 				}
 			}
 			uni.forEach(act => {
-				const $etr = $(`<tr data-points='0'><td>${act.short}</td><td>0</td><td>0</td></tr>`);
-				$tbody.append($etr);
+				if (!unis.includes(act.short)) {
+					const $etr = $(`<tr data-points='0'><td>${act.short}</td><td>0</td><td>0</td></tr>`);
+					$tbody.append($etr);
+				}
 			})
 			let $trr = $("<tr></tr>");
 			let $tfh = $("<td>Total Votes</td>");
