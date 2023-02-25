@@ -52,6 +52,7 @@ const type = 'Server';
 	{
 		config.require('debugLineNum', {true: 'Yes', false: 'No'}, 'Show line numbers in logs', ['advancedMode', true]);
 		config.require('printPings', {true: 'Yes', false: 'No'}, 'Print ping messages', ['advancedMode', true]);
+    config.require('sslEnabled', {true: 'Yes', false: 'No'}, 'Will this site use SSL', ['advancedMode', true]);
 	}
 
 	config.default('port', 8080);
@@ -62,6 +63,7 @@ const type = 'Server';
 	config.default('debugLineNum', false);
 	config.default('printPings', false);
 	config.default('advancedMode', false);
+  config.default('sslEnabled', true);
   config.default('countOnVerify', true);
   config.default('dbHost', 'localhost');
   config.default('dbPort', '3306');
@@ -327,7 +329,8 @@ async function handleRoot(request, response) {
 	response.header('Content-type', 'text/html');
 	response.render('index', {
     host: config.get('host'),
-    version: version
+    version: version,
+    ssl: config.get('sslEnabled')
   });
 }
 
@@ -340,7 +343,8 @@ async function handleAdmin(request, response) {
     response.header('Content-type', 'text/html');
     response.render('admin', {
       host: config.get('host'),
-      version: version
+      version: version,
+      ssl: config.get('sslEnabled')
     });
   } else {
     response.set('WWW-Authenticate', 'Basic realm="401"');
@@ -353,7 +357,8 @@ async function handleVerify(request, response) {
 	response.header('Content-type', 'text/html');
 	response.render('verify', {
     host: config.get('host'),
-    version: version
+    version: version,
+    ssl: config.get('sslEnabled')
   });
 }
 
@@ -474,12 +479,14 @@ async function commandVote(msgObj, socket, req) {
   const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
   const socketIP = req.headers['cf-connecting-ip'] || req.socket.remoteAddress;
   const bans = await SQL.query(`SELECT IP FROM main_bans WHERE IP='${socketIP}'`);
+  const thisEntry = await SQL.getLast({'PK':msgObj.PK}, 'PK', 'main_votes');
   const verifyCode = date+msgObj.act+socketIP+msgObj.PK;
   const verified = config.get('emailEnabled') ? 0 : 1;
+  const enabled = thisEntry.fromUni == msgObj.act ? 0 : 1;
   const voteData = {
     "act": msgObj.act,
     "dateVote": date,
-    "enabled": 1,
+    "enabled": enabled,
     "verified": verified,
     "IP": socketIP,
     "verificationCode": verifyCode.replace(/\D/g,"")

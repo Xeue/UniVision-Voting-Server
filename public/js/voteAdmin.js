@@ -75,7 +75,14 @@ let webConnection;
 
 function getUni(PK) {
 	for (let index = 0; index < uni.length; index++) {
-		if (uni[index].PK = PK) return uni[index]
+		if (uni[index].PK == PK) return uni[index]
+	}
+	return {
+		"name": "undefined",
+		"short": "undefined",
+		"act": "undefined",
+		"email": "undefined",
+		"order": "undefined"
 	}
 }
 
@@ -325,7 +332,7 @@ $(document).ready(function () {
 
 	$("main").addClass("disconnected");
 
-	webConnection = new webSocket(host, 'Browser', version, true);
+	webConnection = new webSocket(host, 'Browser', version, ssl);
 	webConnection.addEventListener('message', event => {
 		const [header, payload] = event.detail;
 		socketDoMessage(header, payload);
