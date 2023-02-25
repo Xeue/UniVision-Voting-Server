@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>Voting</title>
+	<link id="favicon_192" rel="icon" href="/img/elections-192.png" sizes="192x192">
+	<link id="favicon_32" rel="icon" href="/img/elections-32.png" sizes="32x32">
+	<link rel="stylesheet" id="vote_css" href="/css/vote.css" type="text/css" media="all">
+	<link rel="stylesheet" id="univision_css" href="/css/univision.css" type="text/css" media="all">
+	<script>
+		const confirmation = false;
+		const host = "<%- host %>";
+		const version = "<%- version %>";
+		const ssl = <%- ssl %>;
+	</script>
+	<script type="text/javascript" id="jQuery_js" src="/js/jQuery.js"></script>
+	<script type="text/javascript" id="vote_js" src="/js/vote.js"></script>
+	<script type="text/javascript" id="ws_js" src="/js/ws.js"></script>
+	<script type="text/javascript" id="cookie_js" src="/js/cookie.js"></script>
+</head>
+
+<body>
+	<main id="main" class="site-main disconnected">
+
+		<header id="vote_header" style="opacity: 1;">
+			Univision 2023 voting
+		</header>
+		<div>
+			<section id="vote_early" class="hidden_left">
+				<div>Voting has not opened yet, please come back later<br />However, you can still enjoy the acts here: <br /><a
+				href="https://univision.show/watch"><b>univision.show/watch</b></a></div>
+			</section>
+
+			<section id="vote_closed" class="hidden_left">
+				<div>Voting has now closed!<br />However, you can still enjoy the acts here: <br /><a
+						href="https://univision.show/watch"><b>univision.show/watch</b></a></div>
+			</section>
+
+			<section id="vote_select" class="hidden_right">
+				<div class="fromUni">
+					Which University are you from?
+				</div>
+				<div id="vote_cUniCont">
+				</div>
+			</section>
+
+			<section id="vote_verify" class="hidden_right">
+				<figure class="vote_uni_logo">
+					<img>
+				</figure>
+				<div id="vote_email_cont">
+					<input type="text" placeholder="Email" id="vote_email">
+				</div>
+				<button id="vote_next" type="button">NEXT</button>
+
+			</section>
+
+			<section id="vote_alternate" class="hidden_right">
+				<figure class="vote_uni_logo">
+					<img>
+				</figure>
+				<div id="vote_alternate_txt">
+					Please enter your University's voting code
+				</div>
+				<div id="vote_alternate_cont">
+					<div>
+						<span>Voting Code</span>
+						<input type="text" placeholder="Code" id="vote_alternate_code">
+					</div>
+					<div>
+						<span>Email Address</span>
+						<input type="text" placeholder="Email" id="vote_alternate_email">
+					</div>
+				</div>
+				<button id="vote_next_alternate" type="button">NEXT</button>
+			</section>
+
+			<section id="vote_choose" class="hidden_right">
+
+				<div id="vote_options">
+
+					<div id="vote_row">
+
+					</div>
+
+				</div>
+
+			</section>
+
+			<section id="vote_thanks" class="hidden_right">
+				<div>Thank you for voting, we hope you enjoyed the acts!<br /><br />You will be sent a confirmation
+					link<br />Please check your email or spam or your vote won't be counted!<br />You can enjoy the acts here: <br /><a
+					href="https://univision.show/watch"><b>univision.show/watch</b></a></div>
+			</section>
+
+			<section id="vote_already" class="hidden_right">
+				<div>You have already placed your vote!<br />You can enjoy the acts here: <br /><a
+					href="https://univision.show/watch"><b>univision.show/watch</b></a></div>
+			</section>
+		</div>
+	</main>
+</body>
+
+</html>

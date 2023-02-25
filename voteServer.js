@@ -1,312 +1,256 @@
 #!/usr/bin/env node
 /*jshint esversion: 6 */
+const serverID = new Date().getTime();
 
-const WebSocketServer = require('ws').WebSocketServer;
-const fs = require('fs');
-const mysql = require('mysql');
-const path = require('path');
+import { WebSocketServer } from 'ws';
+import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import {log, logObj, logs} from 'xeue-logs';
+import http from 'http';
+import cors from 'cors';
+import express from 'express';
+import {config} from 'xeue-config';
+import {SQLSession} from 'xeue-sql';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const require = createRequire(import.meta.url);
 const nodemailer = require('nodemailer');
 
-const processArgs = process.argv.slice(2);
-const version = "2.0";
-const type = "Server";
-const loadTime = new Date().getTime();
-let DBConn = 0;
+const {version} = require('./package.json');
+const type = 'Server';
 
-let MYsqlDetails = JSON.parse(fs.readFileSync(__dirname + "/database.conf"));
-let EmailDetails = JSON.parse(fs.readFileSync(__dirname + "/email.conf"));
+{ /* Config */
+	logs.printHeader('UniVision Voting');
+	config.useLogger(logs);
 
-let transporter = nodemailer.createTransport(EmailDetails);
+	config.require('port', [], 'What port shall the server use');
+	config.require('host', [], 'What url/IP is the server connected to from');
+	config.require('serverName', [], 'Please name this server');
+	config.require('loggingLevel', {'A':'All', 'D':'Debug', 'W':'Warnings', 'E':'Errors'}, 'Set logging level');
+	config.require('createLogFile', {true: 'Yes', false: 'No'}, 'Save logs to local file');
+	config.require('countOnVerify', {true: 'Yes', false: 'No'}, 'Recount votes everytime a new vote is verified (can cause perfomance issues)');
+  config.require('status', {'OPEN': 'Open', 'EARLY': 'Early', 'CLOSED': 'Closed'}, 'The current status of voting');
+  config.require('adminUsername', [], 'Please set a username for the admin page');
+  config.require('adminPassword', [], 'Please set a password for the admin page');
 
-class Datebase {
-  constructor() {
-    this.connection = mysql.createPool(MYsqlDetails);
-    DBConn++;
-    log(`${g}Connecting${w} to SQL database, current connections: ${y}${DBConn}${w}`, "S");
+  config.require('emailEnabled', {true: 'Yes', false: 'No'}, 'Require verification via email');
+  { 
+    config.require('emailService', [], 'Email provider (https://nodemailer.com/smtp/well-known/)', ['emailEnabled', true]);
+    config.require('emailUser', [], 'Username', ['emailEnabled', true]);
+    config.require('emailPass', [], 'Password', ['emailEnabled', true]);
   }
-  query(sql, args) {
-    return new Promise( ( resolve, reject ) => {
-      this.connection.query( sql, args, ( err, rows ) => {
-        if ( err )
-          return reject( err );
-        resolve( rows );
-        logObj("Data from DB", rows, "A");
-      } );
-    } );
-  }
-  insert(object, table, args) {
-    return new Promise( ( resolve, reject ) => {
-      let keys = [];
-      let values = [];
-      for (var variable in object) {
-        if (object.hasOwnProperty(variable)) {
-          keys.push(variable);
-          values.push(`'${object[variable]}'`);
-        }
-      }
-      let sql = `INSERT INTO \`${table}\` (${keys.join(',')}) VALUES (${values.join(',')})`;
-      this.connection.query( sql, args, ( err, result, fields ) => {
-        if ( err )
-          return reject( err );
-        resolve( result );
-        logObj("Inserted into DB", result, "A");
-      } );
-    } );
-  }
-  update(object, where, table, args) {
-    return new Promise( ( resolve, reject ) => {
 
-      let values = [];
-      for (var variable in object) {
-        if (object.hasOwnProperty(variable)) {
-          values.push(`\`${variable}\`='${object[variable]}'`);
-        }
-      }
-      let sql = `UPDATE \`${table}\` SET ${values.join(',')}`;
-      if (typeof where !== "undefined") {
-        let wheres = [];
-        for (var col in where) {
-          if (where.hasOwnProperty(col)) {
-            wheres.push(`\`${col}\`='${where[col]}'`);
-          }
-        }
-        sql += ' WHERE '+wheres.join(' AND ');
-      }
+  config.require('dbHost', [], 'Database address');
+  config.require('dbPort', [], 'Database port');
+  config.require('dbUser', [], 'Database username');
+  config.require('dbPass', [], 'Database password');
+  config.require('dbDatabase', [], 'Database name');
 
-      this.connection.query( sql, args, ( err, result, fields ) => {
-        if ( err )
-          return reject( err );
-        resolve( result );
-        logObj("Updated DB", result, "A");
-      } );
-    } );
-  }
-  close() {
-    return new Promise( ( resolve, reject ) => {
-      DBConn--;
-      log(`${r}Closing${w} connection to SQL database, current connections: ${y}${DBConn}${w}`, "S");
-      this.connection.end( err => {
-        if ( err )
-          return reject( err );
-        resolve();
-      } );
-    } );
-  }
+	config.require('advancedMode', {true: 'Yes', false: 'No'}, 'Show advanced config options?');
+	{
+		config.require('debugLineNum', {true: 'Yes', false: 'No'}, 'Show line numbers in logs', ['advancedMode', true]);
+		config.require('printPings', {true: 'Yes', false: 'No'}, 'Print ping messages', ['advancedMode', true]);
+    config.require('sslEnabled', {true: 'Yes', false: 'No'}, 'Will this site use SSL', ['advancedMode', true]);
+	}
+
+	config.default('port', 8080);
+	config.default('host', 'localhost');
+	config.default('serverName', 'Voting Server');
+	config.default('loggingLevel', 'W');
+	config.default('createLogFile', true);
+	config.default('debugLineNum', false);
+	config.default('printPings', false);
+	config.default('advancedMode', false);
+  config.default('sslEnabled', true);
+  config.default('countOnVerify', true);
+  config.default('dbHost', 'localhost');
+  config.default('dbPort', '3306');
+  config.default('dbUser', 'univision');
+  config.default('dbDatabase', 'univision');
+  config.default('status', 'OPEN');
+  config.default('emailUser', 'admin');
+  config.default('emailEnabled', false);
+
+	if (!await config.fromFile(__dirname + '/config.conf')) {
+		await config.fromCLI(__dirname + '/config.conf');
+	}
+
+	logs.setConf({
+		'createLogFile': config.get('createLogFile'),
+		'logsFileName': 'VotingLogging',
+		'configLocation': __dirname,
+		'loggingLevel': config.get('loggingLevel'),
+		'debugLineNum': config.get('debugLineNum'),
+	});
+
+	log('Running version: v'+version, ['H', 'SERVER', logs.g]);
+
+	config.print();
+	config.userInput(async (command)=>{
+		switch (command) {
+		case 'config':
+			await config.fromCLI(__dirname + '/config.conf');
+			logs.setConf({
+				'createLogFile': config.get('createLogFile'),
+				'logsFileName': 'VotingLogging',
+				'configLocation': __dirname,
+				'loggingLevel': config.get('loggingLevel'),
+				'debugLineNum': config.get('debugLineNum')
+			});
+			SQL.init(tables);
+			return true;
+		}
+	});
 }
 
-let myID = `S_${loadTime}_${version}`;
-let port = 3001;
-let host = "vote.chilton.tv";
-let loggingLevel = "D";
-let debugLineNum = true;
-let createLogFile = true;
-let argLoggingLevel;
-let ownHTTPserver = false;
-let dataBase;
-let certPath;
-let keyPath;
-let serverName = "Voting Server v2";
-let printPings = true;
-let voteCodes = ["SURREY", "TESTIN"];
-let status;
+const transporter = nodemailer.createTransport({
+	'service': config.get('emailService'),
+	'auth': {
+		'user': config.get('emailUser'),
+		'pass': config.get('emailPass')
+	}
+});
+
+const tables = [
+	{
+		name: 'main_votes',
+		definition: `CREATE TABLE \`main_votes\` (
+      \`PK\` int(11) NOT NULL,
+      \`act\` int(11) DEFAULT NULL,
+      \`fromUni\` int(11) NOT NULL,
+      \`code\` varchar(256) DEFAULT NULL,
+      \`email\` varchar(256) NOT NULL,
+      \`verificationCode\` varchar(256) DEFAULT NULL,
+      \`IP\` varchar(256) NOT NULL,
+      \`enabled\` tinyint(1) NOT NULL DEFAULT '1',
+      \`verified\` tinyint(1) NOT NULL DEFAULT '0',
+      \`dateVote\` timestamp NULL DEFAULT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;`,
+		PK:'PK'
+	},
+	
+	{
+		name: 'main_acts',
+		definition: `CREATE TABLE \`main_acts\` (
+      \`PK\` int(11) NOT NULL,
+      \`uniLongName\` text NOT NULL,
+      \`uniShortName\` text NOT NULL,
+      \`uniImage\` text NOT NULL,
+      \`actOrder\` int(11) NOT NULL,
+      \`actName\` text NOT NULL,
+      \`actImage\` text NOT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;`,
+		PK:'PK'
+	},
+	
+	{
+		name: 'main_bans',
+		definition: `CREATE TABLE \`main_bans\` (
+      \`PK\` int(11) NOT NULL,
+      \`IP\` varchar(256) NOT NULL,
+      \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;`,
+		PK:'PK'
+	},
+
+  {
+		name: 'main_status',
+		definition: `CREATE TABLE \`main_status\` (
+      \`status\` varchar(256) NOT NULL,
+      \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;`,
+		PK:'PK'
+	},
+
+  {
+		name: 'main_judge',
+		definition: `CREATE TABLE \`main_judge\` (
+      \`act\` int(11) NOT NULL,
+      \`points\` int(11) NOT NULL,
+      \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;`,
+		PK:'PK'
+	}
+];
+
+const SQL = new SQLSession(
+  config.get('dbHost'),
+  config.get('dbPort'),
+  config.get('dbUser'), 
+  config.get('dbPass'), 
+  config.get('dbDatabase'),
+  logs
+);
+
+await SQL.init(tables);
+
 let acts;
-let countOnVerify = true;
 
-let r = "\x1b[31m";
-let g = "\x1b[32m";
-let y = "\x1b[33m";
-let b = "\x1b[34m";
-let p = "\x1b[35m";
-let c = "\x1b[36m";
-let w = "\x1b[37m";
-let reset = "\x1b[0m";
-let dim = "\x1b[2m";
-let bright = "\x1b[1m";
+const [serverHTTP, serverWS] = await startServers();
 
-loadArgs();
+async function startServers() {
+  const expressApp = express();
+	const serverWS = new WebSocketServer({noServer: true});
+	const serverHTTP = http.createServer(expressApp);
 
-printHeader();
+  setupExpress(expressApp);
 
-log(`Starting server: ${y}${path.basename(__filename)}${w}`);
+  serverHTTP.listen(config.get('port'));
+  log(`Voting server can be accessed at http://localhost:${config.get('port')}`, 'C');
 
-startServer();
-
-function startServer() {
-  log(`Running as ${y}standalone${w} websocket server`);
-  log(`WebTally server running on port: ${y}${port}${w}`);
-  switch (loggingLevel) {
-    case "A":
-      log(`Logging set to ${y}All${w}`);
-      break;
-    case "D":
-      log(`Logging set to ${y}Debug${w}`);
-      break;
-    case "W":
-      log(`Logging set to ${y}Warning${w} & ${y}Error${w}`);
-      break;
-    case "E":
-      log(`Logging set to ${y}Error${w} only`);
-      break;
-    default:
-  }
-  let today = new Date();
-  let dd = String(today.getDate()).padStart(2, '0');
-  let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-  let yyyy = today.getFullYear();
-  let fileName = `${configLocation}/logs/voteServer-[${yyyy}-${mm}-${dd}].log`;
-  log(`Logging to file: ${y}${fileName}${w}`);
-  log("Show line number in logs set to: "+debugLineNum);
-  coreServer = new WebSocketServer({ port: port });
-  log("Started Websocket server");
-  const MConn = new Datebase();
+  serverHTTP.on('upgrade', (request, socket, head) => {
+		log('Upgrade request received', 'D');
+		serverWS.handleUpgrade(request, socket, head, socket => {
+			serverWS.emit('connection', socket, request);
+		});
+	});
 
 
-  MConn.query(`SELECT count(*) as count
-    FROM information_schema.TABLES
-    WHERE (TABLE_SCHEMA = 'univision') AND (TABLE_NAME = 'main_votes')
-  `).then((rows)=>{
-    if (rows[0].count == 0) {
-      log("Votes table doesn't exist, creating new one", "S");
-      MConn.query(`CREATE TABLE \`main_votes\` (
-        \`PK\` int(11) NOT NULL,
-        \`act\` int(11) DEFAULT NULL,
-        \`fromUni\` int(11) NOT NULL,
-        \`code\` varchar(256) DEFAULT NULL,
-        \`email\` varchar(256) NOT NULL,
-        \`verificationCode\` varchar(256) DEFAULT NULL,
-        \`IP\` varchar(256) NOT NULL,
-        \`enabled\` tinyint(1) NOT NULL DEFAULT '1',
-        \`verified\` tinyint(1) NOT NULL DEFAULT '0',
-        \`dateVote\` timestamp NULL DEFAULT NULL
-      ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-      `);
-    }
-  });
-
-  MConn.query(`SELECT count(*) as count
-  FROM information_schema.TABLES
-  WHERE (TABLE_SCHEMA = 'univision') AND (TABLE_NAME = 'main_acts')
-  `).then((rows)=>{
-    if (rows[0].count == 0) {
-      log("Acts table doesn't exist, creating new one", "S");
-      MConn.query(`CREATE TABLE \`main_acts\` (
-        \`PK\` int(11) NOT NULL,
-        \`uniLongName\` text NOT NULL,
-        \`uniShortName\` text NOT NULL,
-        \`uniImage\` text NOT NULL,
-        \`uniEmail\` text NOT NULL,
-        \`actName\` text NOT NULL,
-        \`actImage\` text NOT NULL
-      ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-      `);
-    }
-  });
-
-  MConn.query(`SELECT count(*) as count
-  FROM information_schema.TABLES
-  WHERE (TABLE_SCHEMA = 'univision') AND (TABLE_NAME = 'main_bans')
-  `).then((rows)=>{
-    if (rows[0].count == 0) {
-      log("Bans table doesn't exist, creating new one", "S");
-      MConn.query(`CREATE TABLE \`main_bans\` (
-        \`PK\` int(11) NOT NULL,
-        \`IP\` varchar(256) NOT NULL,
-        \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-      ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-      `);
-    }
-  });
-
-  MConn.query(`SELECT count(*) as count
-  FROM information_schema.TABLES
-  WHERE (TABLE_SCHEMA = 'univision') AND (TABLE_NAME = 'main_status')
-  `).then((rows)=>{
-    if (rows[0].count == 0) {
-      log("Status table doesn't exist, creating new one", "S");
-      MConn.query(`CREATE TABLE \`main_status\` (
-        \`status\` varchar(256) NOT NULL,
-        \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-      ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-      `);
-    }
-  });
-
-  MConn.query(`SELECT count(*) as count
-  FROM information_schema.TABLES
-  WHERE (TABLE_SCHEMA = 'univision') AND (TABLE_NAME = 'main_judge')
-  `).then((rows)=>{
-    if (rows[0].count == 0) {
-      log("Judge table doesn't exist, creating new one", "S");
-      MConn.query(`CREATE TABLE \`main_judge\` (
-        \`act\` int(11) NOT NULL,
-        \`points\` int(11) NOT NULL,
-        \`timestamp\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-      ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-      `);
-    }
-  });
-
-  MConn.query('SELECT * FROM main_acts;').then((rows)=>{
-    log("Loaded acts info");
-    acts = rows;
-    startLoops(MConn);
-  });
+  acts = await SQL.query('SELECT * FROM main_acts ORDER BY `actOrder` ASC;;');
+  log("Loaded acts info");
+  startLoops();
 
   // Main websocket server functionality
-  coreServer.on('connection', function connection(socket, req) {
+  serverWS.on('connection', async (socket, req) => {
     log("New connection established, sending it meta data", "D");
 
-    MConn.query('SELECT * FROM main_acts;').then((rows)=>{
-      let data = {};
-      acts = rows;
-      rows.forEach( (row) => {
-        data[row.PK] = {};
-        data[row.PK].email = row.uniEmail;
-        data[row.PK].logo = row.uniImage;
-        data[row.PK].name = row.uniLongName;
-        data[row.PK].short = row.uniShortName;
-        data[row.PK].act = row.actName;
-        data[row.PK].actImage = row.actImage;
-      });
-      let actsJSON = `{"type":"voteActs","data":${JSON.stringify(data)}}`;
-      MConn.query('SELECT `status` FROM main_status;').then((rows)=>{
-        status = rows[0].status;
-        let statusJSON = `{"type":"voteStatus","status":"${rows[0].status}"}`;
-        MConn.query('SELECT `IP` FROM main_bans;').then((rows)=>{
-          let IPs = [];
-          rows.forEach( (row) => {
-            IPs.push(row.IP);
-          });
-          let bansJSON = `{"type":"voteBans","IPs":${JSON.stringify(IPs)}}`;
-          MConn.query(`SELECT * FROM main_judge`).then((rows)=>{
-            let points = {}
-            rows.forEach( (row) => {
-              points[row.act] = row.points
-            });
-            let judgeJSON = JSON.stringify({"type":"voteJudge","points":points});
-            socket.send(actsJSON);
-            socket.send(statusJSON);
-            socket.send(bansJSON);
-            socket.send(judgeJSON);
-          });
-        });
-      });
+    const actsData = await getActsObject();
+    const statusData = await SQL.query('SELECT `status` FROM main_status;');
+    const bansData = await SQL.query('SELECT `IP` FROM main_bans;');
+    const IPs = [];
+    bansData.forEach(ban => {
+      IPs.push(ban.IP);
     });
+    const judgeData = await SQL.query(`SELECT * FROM main_judge`);
+    const points = {}
+    judgeData.forEach(judge => {
+      points[judge.act] = judge.points
+    });
+    if (statusData.length == 0) {
+      await SQL.query(`UPDATE \`main_status\` SET \`status\`='${config.get('status')}';`);
+    }
+    sendData(socket, {"type":"voteActs","data":actsData});
+    sendData(socket, {"type":"voteStatus","status":config.get('status')});
+    sendData(socket, {"type":"voteBans","IPs":IPs});
+    sendData(socket, {"type":"voteJudge","points":points});
 
     socket.pingStatus = "alive";
 
     socket.on('message', function message(msgJSON) {
       let msgObj = {};
       try {
-        msgObj = JSON.parse(msgJSON);
+        let msgData = JSON.parse(msgJSON);
+        msgObj = msgData.payload;
         if (msgObj.type !== "ping" && msgObj.type !== "pong") {
           logObj('Received', msgObj, "A");
-        } else if (printPings == true) {
+        } else if (config.get('printPings') == true) {
           logObj('Received', msgObj, "A");
         }
         switch (msgObj.type) {
           case "voteAdmin":
-            commandAdmin(msgObj, socket, MConn);
+            commandAdmin(msgObj, socket);
             break;
           case "voteStart":
             commandStart(msgObj, socket, req);
@@ -315,7 +259,7 @@ function startServer() {
             commandVote(msgObj, socket, req);
             break;
           case "voteConfirm":
-            commandConfirm(msgObj, socket, MConn);
+            commandConfirm(msgObj);
             break;
           case "voteEdit":
             commandEdit(msgObj, socket);
@@ -324,18 +268,7 @@ function startServer() {
             socket.pingStatus = "alive";
             break;
           case "voteJudge":
-            MConn.query(`SELECT * FROM main_judge WHERE act='${msgObj.act}'`).then((rows)=>{
-              handelJudgeUpdates(msgObj, rows, MConn).then(()=>{
-                MConn.query(`SELECT * FROM main_judge`).then((rows)=>{
-                  let points = {}
-                  rows.forEach( (row) => {
-                    points[row.act] = row.points
-                  });
-                  log("Relaying judge votes", "D");
-                  sendAll({"type":"voteJudge","points":points});
-                });
-              });
-            });
+            commandJudge(msgObj);
             break;
           default:
             log("Unknown message: "+msgJSON, "W");
@@ -356,7 +289,7 @@ function startServer() {
     socket.on('close', function() {
       try {
         let oldId = JSON.parse(JSON.stringify(socket.ID));
-        log(`${r}${oldId}${reset} Connection closed`, "D");
+        log(`${logs.r}${oldId}${logs.reset} Connection closed`, "D");
         socket.connected = false;
       } catch (e) {
         log("Could not end connection cleanly","E");
@@ -364,129 +297,148 @@ function startServer() {
     });
   });
 
-  coreServer.on('error', function() {
+  serverWS.on('error', function() {
     log("Server failed to start or crashed, please check the port is not in use", "E");
     process.exit(1);
   });
+
+  return [serverHTTP, serverWS];
 }
 
-function commandAdmin(msgObj, socket, SQLConn) {
-  log(`Client asking server to run command: ${b}${msgObj.command}${w}`, "D");
-  const MConn = new Datebase();
+function setupExpress(expressApp) {
+	expressApp.set('views', __dirname + '/views');
+	expressApp.set('view engine', 'ejs');
+	expressApp.use(cors());
+	expressApp.use(express.static('public'));
+
+	expressApp.get('/', async function(request, response) {
+		handleRoot(request, response);
+	});
+
+  expressApp.get('/admin', async function(request, response) {
+		handleAdmin(request, response);
+	});
+
+  expressApp.get('/verify', async function(request, response) {
+		handleVerify(request, response);
+	});
+}
+
+async function handleRoot(request, response) {
+	log('Serving index page', 'A');
+	response.header('Content-type', 'text/html');
+	response.render('index', {
+    host: config.get('host'),
+    version: version,
+    ssl: config.get('sslEnabled')
+  });
+}
+
+async function handleAdmin(request, response) {
+	log('Serving admin page', 'A');
+  const b64auth = (request.headers.authorization || '').split(' ')[1] || '';
+  const [login, password] = Buffer.from(b64auth, 'base64').toString().split(':');
+
+  if (login && password && login === config.get('adminUsername') && password === config.get('adminPassword')) {
+    response.header('Content-type', 'text/html');
+    response.render('admin', {
+      host: config.get('host'),
+      version: version,
+      ssl: config.get('sslEnabled')
+    });
+  } else {
+    response.set('WWW-Authenticate', 'Basic realm="401"');
+    response.status(401).send('Authentication required.');
+  }
+}
+
+async function handleVerify(request, response) {
+	log('Serving verify page', 'A');
+	response.header('Content-type', 'text/html');
+	response.render('verify', {
+    host: config.get('host'),
+    version: version,
+    ssl: config.get('sslEnabled')
+  });
+}
+
+async function commandAdmin(msgObj, socket) {
+  log(`Client asking server to run command: ${logs.b}${msgObj.command}${logs.w}`, "D");
   switch (msgObj.command) {
     case "status":
-      let colour;
-      if (msgObj.status == "OPEN") {
-        colour = g;
-      } else {
-        colour = r;
-      }
-      log(`Setting status to: ${colour}${msgObj.status}${w}`, "D");
-      MConn.query(`UPDATE \`main_status\` SET \`status\`='${msgObj.status}';`).then((rows)=>{
-        MConn.close();
-        log("Updated voting status", "D");
-        status = msgObj.status;
-        sendAll(`{"type":"voteStatus","status":"${msgObj.status}"}`);
-      });
+      const colour = msgObj.status == "OPEN" ? logs.g : logs.r;
+      log(`Setting status to: ${colour}${msgObj.status}${logs.w}`, "D");
+      await SQL.query(`UPDATE \`main_status\` SET \`status\`='${msgObj.status}';`);
+      log("Updated voting status", "D");
+      config.set('status', msgObj.status);
+      sendAll(`{"type":"voteStatus","status":"${msgObj.status}"}`);
       break;
     case "getMeta":
       socket.admin = true;
-      MConn.query(`SELECT * FROM \`main_votes\` WHERE act IS NOT NULL;`).then((rows)=>{
-        log("Sending votes to admin", "D");
-        let packet = {};
-        packet.type = "voteMeta";
-        packet.votes = rows;
-        socket.send(JSON.stringify(packet));
-        MConn.close();
+      const meta = await SQL.query(`SELECT * FROM \`main_votes\` WHERE act IS NOT NULL;`);
+      log("Sending votes to admin", "D");
+      sendData(socket, {
+        "type": "voteMeta",
+        "votes": meta
       });
       break;
     case "verify":
-      MConn.query(`UPDATE \`main_votes\` SET \`verified\`=1 WHERE \`PK\`=${msgObj.PK};`).then(()=>{
-        MConn.close();
-        if (countOnVerify) {
-          countTotals(SQLConn);
-        }
-        updateVoteAdmin(msgObj.PK);
-      });
+      await SQL.query(`UPDATE \`main_votes\` SET \`verified\`=1 WHERE \`PK\`=${msgObj.PK};`);
+      if (config.get('countOnVerify')) countTotals();
+      updateVoteAdmin(msgObj.PK);
       break;
     case "unVerify":
-      MConn.query(`UPDATE \`main_votes\` SET \`verified\`=0 WHERE \`PK\`=${msgObj.PK};`).then(()=>{
-        MConn.close();
-        if (countOnVerify) {
-          countTotals(SQLConn);
-        }
-        updateVoteAdmin(msgObj.PK).then((rows)=>{
-          verifyEmail(msgObj.PK);
-        });
-      });
+      await SQL.query(`UPDATE \`main_votes\` SET \`verified\`=0 WHERE \`PK\`=${msgObj.PK};`);
+      if (config.get('countOnVerify')) countTotals();
+      await updateVoteAdmin(msgObj.PK);
+      await verifyEmail(msgObj.PK);
       break;
     case "exclude":
-      MConn.query(`UPDATE \`main_votes\` SET \`enabled\`=0 WHERE \`PK\`=${msgObj.PK};`).then(()=>{
-        if (countOnVerify) {
-          countTotals(SQLConn);
-        }
-        MConn.close();
-        updateVoteAdmin(msgObj.PK);
-      });
+      await SQL.query(`UPDATE \`main_votes\` SET \`enabled\`=0 WHERE \`PK\`=${msgObj.PK};`);
+      if (config.get('countOnVerify')) countTotals();
+      updateVoteAdmin(msgObj.PK);
       break;
     case "include":
-      MConn.query(`UPDATE \`main_votes\` SET \`enabled\`=1 WHERE \`PK\`=${msgObj.PK};`).then(()=>{
-        if (countOnVerify) {
-          countTotals(SQLConn);
-        }
-        MConn.close();
-        updateVoteAdmin(msgObj.PK);
-      });
+      await SQL.query(`UPDATE \`main_votes\` SET \`enabled\`=1 WHERE \`PK\`=${msgObj.PK};`);
+      if (config.get('countOnVerify')) countTotals();
+      updateVoteAdmin(msgObj.PK);
       break;
     case "banIP":
-      MConn.query(`INSERT INTO \`main_bans\` (\`IP\`) VALUES ('${msgObj.IP}');`).then(()=>{
-        MConn.query(`SELECT \`IP\` FROM \`main_bans\`;`).then((rows)=>{
-          let IPs = [];
-          rows.forEach( (row) => {
-            IPs.push(row.IP);
+      await SQL.query(`INSERT INTO \`main_bans\` (\`IP\`) VALUES ('${msgObj.IP}');`);
+      const allBans = await SQL.query(`SELECT \`IP\` FROM \`main_bans\`;`);
+      const IPs = [];
+      allBans.forEach(ban => {
+        IPs.push(ban.IP);
+      });
+      sendAll(`{"type":"voteBans","IPs":${JSON.stringify(IPs)}}`);
+      await SQL.query(`UPDATE \`main_votes\` SET \`enabled\`=0 WHERE \`IP\`='${msgObj.IP}';`);
+      const bans = await SQL.query(`SELECT * FROM \`main_votes\` WHERE \`IP\`='${msgObj.IP}' AND act IS NOT NULL;`);
+      serverWS.clients.forEach(client => {
+        if (client.admin == true && client.readyState === 1) {
+          sendData(socket, {
+            "type": "voteMeta",
+            "votes": bans
           });
-          sendAll(`{"type":"voteBans","IPs":${JSON.stringify(IPs)}}`);
-          MConn.query(`UPDATE \`main_votes\` SET \`enabled\`=0 WHERE \`IP\`='${msgObj.IP}';`).then(()=>{
-            MConn.query(`SELECT * FROM \`main_votes\` WHERE \`IP\`='${msgObj.IP}' AND act IS NOT NULL;`).then((rows)=>{
-              MConn.close();
-              let packet = {};
-              packet.type = "voteMeta";
-              packet.votes = rows;
-              let jsonPacket = JSON.stringify(packet);
-              coreServer.clients.forEach(function each(client) {
-                if (client.admin == true && client.readyState === 1) {
-                  client.send(jsonPacket);
-                }
-              });
-            });
-          });
-        });
+        }
       });
       break;
     case "unBanIP":
-      MConn.query(`DELETE FROM \`main_bans\` WHERE \`IP\`='${msgObj.IP}';`).then(()=>{
-        MConn.query(`SELECT \`IP\` FROM \`main_bans\`;`).then((rows)=>{
-          let IPs = [];
-          rows.forEach( (row) => {
-            IPs.push(row.IP);
+      await SQL.query(`DELETE FROM \`main_bans\` WHERE \`IP\`='${msgObj.IP}';`);
+      const allUnBans = await SQL.query(`SELECT \`IP\` FROM \`main_bans\`;`);
+      const unIPs = [];
+      allUnBans.forEach(ban => {
+        unIPs.push(ban.IP);
+      });
+      sendAll(`{"type":"voteBans","IPs":${JSON.stringify(unIPs)}}`);
+      SQL.query(`UPDATE \`main_votes\` SET \`enabled\`=1 WHERE \`IP\`='${msgObj.IP}';`);
+      const unBans = await SQL.query(`SELECT * FROM \`main_votes\` WHERE \`IP\`='${msgObj.IP}' AND act IS NOT NULL;`);
+      serverWS.clients.forEach(client => {
+        if (client.admin == true && client.readyState === 1) {
+          sendData(socket, {
+            "type": "voteMeta",
+            "votes": unBans
           });
-          sendAll(`{"type":"voteBans","IPs":${JSON.stringify(IPs)}}`);
-        }).then(()=>{
-          MConn.query(`UPDATE \`main_votes\` SET \`enabled\`=1 WHERE \`IP\`='${msgObj.IP}';`).then(()=>{
-            MConn.query(`SELECT * FROM \`main_votes\` WHERE \`IP\`='${msgObj.IP}' AND act IS NOT NULL;`).then((rows)=>{
-              MConn.close();
-              let packet = {};
-              packet.type = "voteMeta";
-              packet.votes = rows;
-              let jsonPacket = JSON.stringify(packet);
-              coreServer.clients.forEach(function each(client) {
-                if (client.admin == true && client.readyState === 1) {
-                  client.send(jsonPacket);
-                }
-              });
-            });
-          });
-        });
+        }
       });
       break;
     case "reset":
@@ -494,12 +446,9 @@ function commandAdmin(msgObj, socket, SQLConn) {
       let day = d.getDay();
       let hr = d.getHours();
       let min = d.getMinutes();
-      MConn.query(`ALTER TABLE \`main_votes\` RENAME TO \`old_votes_${day}-${hr}-${min}\`;`).then((rows)=>{
-        MConn.query("CREATE TABLE `main_votes` (`PK` int(11) NOT NULL,`act` int(11) DEFAULT NULL,`fromUni` int(11) NOT NULL,`code` varchar(256) DEFAULT NULL,`email` varchar(256) NOT NULL,`verificationCode` varchar(256) DEFAULT NULL,`IP` varchar(256) NOT NULL,`enabled` tinyint(1) NOT NULL DEFAULT '1',`verified` tinyint(1) NOT NULL DEFAULT '0',`dateVote` timestamp NULL DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=latin1;").then(()=>{
-          sendAll(`{"type":"adminReset"}`);
-          MConn.close();
-        });
-      });
+      await SQL.query(`ALTER TABLE \`main_votes\` RENAME TO \`old_votes_${day}-${hr}-${min}\`;`);
+      await SQL.query("CREATE TABLE `main_votes` (`PK` int(11) NOT NULL,`act` int(11) DEFAULT NULL,`fromUni` int(11) NOT NULL,`code` varchar(256) DEFAULT NULL,`email` varchar(256) NOT NULL,`verificationCode` varchar(256) DEFAULT NULL,`IP` varchar(256) NOT NULL,`enabled` tinyint(1) NOT NULL DEFAULT '1',`verified` tinyint(1) NOT NULL DEFAULT '0',`dateVote` timestamp NULL DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=latin1;");
+      sendAll(`{"type":"adminReset"}`);
       break;
     default:
   }
@@ -513,183 +462,122 @@ function commandStart(msgObj, socket, req) {
     "fromUni": msgObj.fromUni,
     "IP": myIP
   };
-  /*if (typeof msgObj.code === "undefined") {
-    if (voteCodes.includes(msgObj.code)) {
-      vote.code = msgObj.code;
-    } else {
-      socket.send('{"type":"voteInvalidCode"}');
-      break;
-    }
-  }*/
-  const MConn = new Datebase();
-  MConn.query(`SELECT * FROM \`main_votes\` WHERE \`email\`='${msgObj.email}';`).then((rows)=>{
+  SQL.query(`SELECT * FROM \`main_votes\` WHERE \`email\`='${msgObj.email}';`).then((rows)=>{
     if (rows.length == 0) {
-      MConn.insert(vote, "main_votes").then((result)=>{
-        MConn.close();
-        socket.send(`{"type":"voteRegistered","PK":"${result.insertId}"}`);
+      SQL.insert(vote, "main_votes").then((result)=>{
+        sendData(socket, {"type":"voteRegistered","PK":Number(result.insertId)})
       });
     } else if (rows[0].act == "" || rows[0].act == null) {
-      MConn.close();
-      socket.send(`{"type":"voteRegistered","PK":"${rows[0].PK}"}`);
+      sendData(socket, {"type":"voteRegistered","PK":rows[0].PK});
     } else {
-      MConn.close();
-      socket.send(`{"type":"voteAlready","PK":"${rows[0].PK}"}`);
+      sendData(socket, {"type":"voteAlready","PK":rows[0].PK});
     }
   });
 }
 
-function commandVote(msgObj, socket, req) {
-  let date = new Date().toISOString().slice(0, 19).replace('T', ' ');
-  let socketIP = req.headers['cf-connecting-ip'] || req.socket.remoteAddress;
-  const MConn = new Datebase();
-  MConn.query(`SELECT IP FROM main_bans WHERE IP='${socketIP}'`).then((rows)=>{
+async function commandVote(msgObj, socket, req) {
+  const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const socketIP = req.headers['cf-connecting-ip'] || req.socket.remoteAddress;
+  const bans = await SQL.query(`SELECT IP FROM main_bans WHERE IP='${socketIP}'`);
+  const thisEntry = await SQL.getLast({'PK':msgObj.PK}, 'PK', 'main_votes');
+  const verifyCode = date+msgObj.act+socketIP+msgObj.PK;
+  const verified = config.get('emailEnabled') ? 0 : 1;
+  const enabled = thisEntry.fromUni == msgObj.act ? 0 : 1;
+  const voteData = {
+    "act": msgObj.act,
+    "dateVote": date,
+    "enabled": enabled,
+    "verified": verified,
+    "IP": socketIP,
+    "verificationCode": verifyCode.replace(/\D/g,"")
+  };
 
-    verifyCode = date+msgObj.act+socketIP+msgObj.PK;
-
-    let voteData = {
-      "act": msgObj.act,
-      "dateVote": date,
-      "enabled": 1,
-      "verified": 0,
-      "IP": socketIP,
-      "verificationCode": verifyCode.replace(/\D/g,"")
-    };
-
-    if (rows.length != 0) {
-      voteData.enabled = 0;
-    }
-
-    MConn.update(voteData, {"PK":msgObj.PK}, "main_votes").then((result)=>{
-      MConn.close();
-      socket.send(`{"type":"voteSaved","PK":"${msgObj.PK}"}`);
-      logObj("Return data", result);
-      updateVoteAdmin(msgObj.PK);
-      verifyEmail(msgObj.PK);
-    });
-  });
-}
-
-function commandConfirm(msgObj, socket, SQLConn) {
-  if (status == "OPEN") {
-    const MConn = new Datebase();
-    MConn.update({"verified":1},{"verificationCode":msgObj.confirmationCode}, "main_votes").then((result)=>{
-      MConn.query(`SELECT * FROM \`main_votes\` WHERE \`verificationCode\`='${msgObj.confirmationCode}';`).then((rows)=>{
-        MConn.close();
-        if (countOnVerify) {
-          countTotals(SQLConn);
-        }
-        let packet = {};
-        packet.type = "voteMeta";
-        packet.votes = rows;
-        let jsonPacket = JSON.stringify(packet);
-        coreServer.clients.forEach(function each(client) {
-          if (client.admin == true && client.readyState === 1) {
-            client.send(jsonPacket);
-          }
-        });
-        return rows;
-      });
-    });
+  if (bans.length != 0) {
+    voteData.enabled = 0;
   }
+
+  SQL.update(voteData, {"PK":msgObj.PK}, "main_votes").then(async result => {
+    sendData(socket, {"type":"voteSaved","PK":msgObj.PK});
+    await updateVoteAdmin(msgObj.PK);
+    await verifyEmail(msgObj.PK);
+  });
 }
 
-function commandEdit(msgObj, socket) {
+async function commandConfirm(msgObj) {
+  if (config.get('status') !== "OPEN") return;
+  await SQL.update({"verified":1},{"verificationCode":msgObj.confirmationCode}, "main_votes");
+  const votes = await SQL.query(`SELECT * FROM \`main_votes\` WHERE \`verificationCode\`='${msgObj.confirmationCode}';`);
+  if (config.get('countOnVerify')) countTotals();
+  serverWS.clients.forEach(client => {
+    if (client.admin !== true || client.readyState !== 1) return;
+    sendData(client, {
+      "type": "voteMeta",
+      "votes": votes
+    });
+  });
+  return votes;
+}
+
+async function commandEdit(msgObj, socket) {
   log(`Client asking server to edit acts`, "D");
-  const MConn = new Datebase();
   switch (msgObj.command) {
     case "new":
-      let data = {
+      const last = await SQL.getN('','actOrder',1,'main_acts');
+      await SQL.insert({
         "uniLongName":"Full name",
         "uniShortName":"Short name",
         "uniImage":"URL of the Uni image",
-        "uniEmail":"Email extension of the Uni",
+        "actOrder":Number(last[0].actOrder)+1,
         "actName":"The acts name",
         "actImage":"URL of the acts image"
-      };
-      MConn.insert(data, "main_acts").then((result)=>{
-        MConn.query('SELECT * FROM main_acts;').then((rows)=>{
-          let data = {};
-          acts = rows;
-          rows.forEach( (row) => {
-            data[row.PK] = {};
-            data[row.PK].email = row.uniEmail;
-            data[row.PK].logo = row.uniImage;
-            data[row.PK].name = row.uniLongName;
-            data[row.PK].short = row.uniShortName;
-            data[row.PK].act = row.actName;
-            data[row.PK].actImage = row.actImage;
-          });
-          sendAll(`{"type":"voteActs","data":${JSON.stringify(data)}}`);
-          MConn.close();
-        });
-      });
+      }, "main_acts");
+      await sendActsObject();
       break;
     case "save":
-      let actsData = msgObj.data;
+      const actsData = msgObj.data;
       for (var actPK in actsData) {
         if (actsData.hasOwnProperty(actPK)) {
           let actData = actsData[actPK];
           let updateData = {};
-          if (actData.email) {updateData.uniEmail = actData.email;}
           if (actData.logo) {updateData.uniImage = actData.logo;}
           if (actData.name) {updateData.uniLongName = actData.name;}
           if (actData.short) {updateData.uniShortName = actData.short;}
+          if (actData.order) {updateData.actOrder = actData.order;}
           if (actData.act) {updateData.actName = actData.act;}
           if (actData.actImage) {updateData.actImage = actData.actImage;}
-
-          MConn.update(updateData, {'PK':actPK}, "main_acts").then((result)=>{
-            MConn.query('SELECT * FROM main_acts;').then((rows)=>{
-              let data = {};
-              acts = rows;
-              rows.forEach( (row) => {
-                data[row.PK] = {};
-                data[row.PK].email = row.uniEmail;
-                data[row.PK].logo = row.uniImage;
-                data[row.PK].name = row.uniLongName;
-                data[row.PK].short = row.uniShortName;
-                data[row.PK].act = row.actName;
-                data[row.PK].actImage = row.actImage;
-              });
-              sendAll(`{"type":"voteActs","data":${JSON.stringify(data)}}`);
-              MConn.close();
-            });
-          });
+          await SQL.update(updateData, {'PK':actPK}, "main_acts");
         }
       }
+      await sendActsObject();
       break;
     case "delete":
-      MConn.query(`DELETE FROM main_acts WHERE PK='${msgObj.PK}'`).then((row)=>{
-        MConn.query(`DELETE FROM main_acts WHERE act='${msgObj.PK}'`).then((row)=>{
-          MConn.query(`DELETE FROM main_acts WHERE fromUni='${msgObj.PK}'`).then((row)=>{
-            MConn.query('SELECT * FROM main_acts;').then((rows)=>{
-              let data = {};
-              acts = rows;
-              rows.forEach( (row) => {
-                data[row.PK] = {};
-                data[row.PK].email = row.uniEmail;
-                data[row.PK].logo = row.uniImage;
-                data[row.PK].name = row.uniLongName;
-                data[row.PK].short = row.uniShortName;
-                data[row.PK].act = row.actName;
-                data[row.PK].actImage = row.actImage;
-              });
-              sendAll(`{"type":"voteActs","data":${JSON.stringify(data)}}`);
-              MConn.close();
-            });
-          });
-        });
-      });
+      await SQL.query(`DELETE FROM main_acts WHERE PK='${msgObj.PK}'`);
+      await SQL.query(`DELETE FROM main_votes WHERE act='${msgObj.PK}'`);
+      await SQL.query(`DELETE FROM main_votes WHERE fromUni='${msgObj.PK}'`);
+      await sendActsObject();
       break;
     default:
 
   }
 }
 
-function handelJudgeUpdates(msgObj, rows, MConn) {
+async function commandJudge(msgObj) {
+  const judgeData = await SQL.query(`SELECT * FROM main_judge WHERE act='${msgObj.act}'`);
+  await handelJudgeUpdates(msgObj, judgeData);
+  const judges = await SQL.query(`SELECT * FROM main_judge`);
+  const points = {}
+  judges.forEach(judge => {
+    points[judge.act] = judge.points
+  });
+  log("Relaying judge votes", "D");
+  sendAll({"type":"voteJudge","points":points});
+}
+
+function handelJudgeUpdates(msgObj, rows) {
   if (rows.length > 0) {
-    return MConn.update({"points":msgObj.points}, {"act":msgObj.act}, "main_judge");
+    return SQL.update({"points":msgObj.points}, {"act":msgObj.act}, "main_judge");
   } else {
-    return MConn.insert({"act":msgObj.act, "points":msgObj.points},"main_judge");
+    return SQL.insert({"act":msgObj.act, "points":msgObj.points},"main_judge");
   }
 }
 
@@ -701,9 +589,9 @@ function sendAll(json) {
     obj = JSON.parse(json);
   }
 
-  coreServer.clients.forEach(function each(client) {
+  serverWS.clients.forEach(function each(client) {
     if (client.readyState === 1) {
-      client.send(JSON.stringify(obj));
+      sendData(client, obj);
     }
   });
 }
@@ -715,81 +603,71 @@ function sendAdmins(json) {
   } else {
     obj = JSON.parse(json);
   }
-  coreServer.clients.forEach(function each(client) {
+  serverWS.clients.forEach(function each(client) {
     if (client.admin == true && client.readyState === 1) {
-      client.send(JSON.stringify(obj));
+      sendData(client, obj);
     }
   });
 }
 
-function updateVoteAdmin(PK, MConn) {
-  if (typeof MConn === "undefined") {
-    MConn = new Datebase();
-  }
-  return MConn.query(`SELECT * FROM \`main_votes\` WHERE \`PK\`='${PK}';`).then((rows)=>{
-    let packet = {};
-    packet.type = "voteMeta";
-    packet.votes = rows;
-    sendAdmins(packet);
-    return rows;
-  }).then((rows)=>{
-    MConn.close();
-    return rows;
+async function updateVoteAdmin(PK) {
+  const votes = await SQL.query(`SELECT * FROM \`main_votes\` WHERE \`PK\`='${PK}';`);
+  sendAdmins({
+    "type": "voteMeta",
+    "votes": votes
+  });
+  return votes;
+}
+
+async function verifyEmail(PK) {
+  if (!config.get('emailEnalbed')) return;
+  const votes = await SQL.query(`SELECT * FROM \`main_votes\` WHERE \`PK\`='${PK}';`);
+
+  const mailOptions = {
+    "from": 'Univision Voting <mail@univision.show>',
+    "to": votes[0].email,
+    "subject": 'Univision Vote confirmation',
+    "text": `Thank you for your vote!
+    Please click https://vote.univision.show/verify?code=${votes[0].verificationCode} to confirm your vote.`,
+    "html": `Thank you for your vote!<br />Please click <a href='https://vote.univision.show/verify?code=${votes[0].verificationCode}'>Verify</a> to confirm your vote.<br />Or go to: https://vote.univision.show/verify?code=${votes[0].verificationCode}<br /><br />We hope you have enjoyed the show.`
+  };
+  logObj('Mail options', mailOptions, "A");
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      logs.error('Error sending email', error);
+    } else {
+      log(`Email sent: ${info.response}`);
+    }
   });
 }
 
-function verifyEmail(PK) {
-  const MConn = new Datebase();
-  return MConn.query(`SELECT * FROM \`main_votes\` WHERE \`PK\`='${PK}';`).then((rows)=>{
-
-    let mailOptions = {
-      "from": 'Univision Voting <mail@univision.show>',
-      "to": rows[0].email,
-      "subject": 'Univision Vote confirmation',
-      "text": `Thank you for your vote!
-      Please click https://univision.show/voteConfirmation/?code=${rows[0].verificationCode} to confirm your vote.`,
-      "html": `Thank you for your vote!<br />Please click <a href='https://univision.show/voteConfirmation/?code=${rows[0].verificationCode}'>Verify</a> to confirm your vote.<br />Or go to: https://univision.show/voteConfirmation/?code=${rows[0].verificationCode}<br /><br />We hope you have enjoyed the show.`
-    };
-    log(mailOptions, "A");
-    transporter.sendMail(mailOptions, function(error, info){
-      if (error) {
-        log(error, "E");
-      } else {
-        log(`Email sent: ${info.response}`);
-      }
-    });
-  }).then(()=>{
-    MConn.close();
-  });
-}
-
-function startLoops(MConn) {
+function startLoops() {
   // 5 Second ping loop
   setInterval(() => {
     doPing();
   }, 5000);
 
-  if (countOnVerify == false) {
+  if (config.get('countOnVerify') == false) {
     setInterval(() => {
-      countTotals(MConn);
+      countTotals();
     }, 20000);
   }
 }
 
 function doPing() {
-  if (printPings !== false) {
+  if (config.get('printPings') !== false) {
     log("Doing ping", "A");
   }
   let counts = {};
   counts.alive = 0;
   counts.dead = 0;
-  coreServer.clients.forEach(function each(client) {
+  serverWS.clients.forEach(function each(client) {
     if (client.readyState === 1) {
       if (client.pingStatus == "alive") {
         counts.alive++;
         let payload = {};
         payload.type = "ping";
-        client.send(JSON.stringify(payload));
+        sendData(client, payload);
         client.pingStatus = "pending";
       } else if (client.pingStatus == "pending") {
         client.pingStatus = "dead";
@@ -798,206 +676,87 @@ function doPing() {
       }
     }
   });
-  if (printPings !== false) {
+  if (config.get('printPings') !== false) {
     log("Clients alive: "+counts.alive, "A");
     log("Clients dead: "+counts.dead, "A");
   }
 }
 
-function countTotals(MConn) {
+function countTotals() {
   log("Counting Totals");
-  for (var act in acts) {
+  for (const act in acts) {
     if (acts.hasOwnProperty(act)) {
-      let PK = acts[act].PK;
-      MConn.query(`SELECT act, count(act) as 'count' FROM \`main_votes\` WHERE verified=1 AND enabled=1 AND fromUni = ${PK} AND act IS NOT NULL GROUP by act`).then((rows)=>{
-        let tots = {};
-        rows.forEach( (row) => {
-          tots[row.act] = row.count;
+      const PK = acts[act].PK;
+      SQL.query(`SELECT act, count(act) as 'count' FROM \`main_votes\` WHERE verified=1 AND enabled=1 AND fromUni = ${PK} AND act IS NOT NULL GROUP by act`).then(rows => {
+        const tots = {};
+        rows.forEach(row => {
+          tots[row.act] = Number(row.count);
         });
-        let json = {
+        sendAdmins({
           "type":"voteTotal",
           "PK":PK,
           "total":tots
-        };
-        sendAdmins(json);
+        });
       });
     }
   }
 
-  MConn.query("SELECT act, count(act) as 'count' FROM `main_votes` WHERE verified=1 AND enabled=1 AND act IS NOT NULL GROUP by act").then((rows)=>{
-    let tots = {};
-    rows.forEach( (row) => {
-      tots[row.act] = row.count;
+  SQL.query("SELECT act, count(act) as 'count' FROM `main_votes` WHERE verified=1 AND enabled=1 AND act IS NOT NULL GROUP by act").then((rows)=>{
+    const tots = {};
+    rows.forEach(row => {
+      tots[row.act] = Number(row.count);
     });
-    let json = {
+    sendAdmins({
       "type":"voteTotals",
       "totals":tots
-    };
-    sendAdmins(json);
+    });
     log("Counted Totals");
   });
 }
 
-function loadArgs() {
-  if (typeof processArgs[0] !== "undefined") {
-    if (processArgs[0] == ".") {
-      processArgs[0] = "";
-    }
-    configLocation = __dirname+processArgs[0];
-  } else {
-    configLocation = __dirname;
-  }
-
-  if (typeof processArgs[1] !== "undefined") {
-    loggingLevel = processArgs[1];
-  }
+async function sendActsObject() {
+  const data = await getActsObject();
+  sendAll(`{"type":"voteActs","data":${JSON.stringify(data)}}`);
 }
 
-function printHeader() {
-
-  console.log("");
-  console.log(" _    _         _ __      __ _       _                __      __     _    _                      ___  ");
-  console.log("| |  | |       (_)\\ \\    / /(_)     (_)               \\ \\    / /    | |  (_)                    |__ \\ ");
-  console.log("| |  | | _ __   _  \\ \\  / /  _  ___  _   ___   _ __    \\ \\  / /___  | |_  _  _ __    __ _  __   __ ) |");
-  console.log("| |  | || '_ \\ | |  \\ \\/ /  | |/ __|| | / _ \\ | '_ \\    \\ \\/ // _ \\ | __|| || '_ \\  / _` | \\ \\ / // / ");
-  console.log("| |__| || | | || |   \\  /   | |\\__ \\| || (_) || | | |    \\  /| (_) || |_ | || | | || (_| |  \\ V // /_ ");
-  console.log(" \\____/ |_| |_||_|    \\/    |_||___/|_| \\___/ |_| |_|     \\/  \\___/  \\__||_||_| |_| \\__, |   \\_/|____|");
-  console.log("                                                                                     __/ |            ");
-  console.log("                                                                                    |___/    ");
-  console.log("");
-
-  logFile("", true);
-  logFile(" _    _         _ __      __ _       _                __      __     _    _                      ___  ", true);
-  logFile("| |  | |       (_)\\ \\    / /(_)     (_)               \\ \\    / /    | |  (_)                    |__ \\ ", true);
-  logFile("| |  | | _ __   _  \\ \\  / /  _  ___  _   ___   _ __    \\ \\  / /___  | |_  _  _ __    __ _  __   __ ) |", true);
-  logFile("| |  | || '_ \\ | |  \\ \\/ /  | |/ __|| | / _ \\ | '_ \\    \\ \\/ // _ \\ | __|| || '_ \\  / _` | \\ \\ / // / ", true);
-  logFile("| |__| || | | || |   \\  /   | |\\__ \\| || (_) || | | |    \\  /| (_) || |_ | || | | || (_| |  \\ V // /_ ", true);
-  logFile(" \\____/ |_| |_||_|    \\/    |_||___/|_| \\___/ |_| |_|     \\/  \\___/  \\__||_||_| |_| \\__, |   \\_/|____|", true);
-  logFile("                                                                                     __/ |            ", true);
-  logFile("                                                                                    |___/    ", true);
-  logFile("", true);
+async function getActsObject() {
+  acts = await SQL.query('SELECT * FROM main_acts ORDER BY `actOrder` ASC;');
+  const actsData = [];
+  acts.forEach(act => {
+    actsData.push({
+      logo: act.uniImage,
+      name: act.uniLongName,
+      short: act.uniShortName,
+      act: act.actName,
+      actImage: act.actImage,
+      order: act.actOrder,
+      PK: act.PK
+    });
+  });
+  return actsData;
 }
 
-function log(message, level, lineNumInp) {
-  let e = new Error();
-  let stack = e.stack.toString().split(/\r\n|\n/);
-  let filename = path.basename(__filename)+":";
-  let lineNum = '('+stack[2].substr(stack[2].indexOf(filename)+filename.length);
-  if (typeof lineNumInp !== "undefined") {
-    lineNum = lineNumInp;
-  }
-  if (lineNum[lineNum.length - 1] !== ")") {
-    lineNum += ")";
-  }
-  let timeNow = new Date();
-  let hours = String(timeNow.getHours()).padStart(2, "0");
-  let minutes = String(timeNow.getMinutes()).padStart(2, "0");
-  let seconds = String(timeNow.getSeconds()).padStart(2, "0");
-  let millis = String(timeNow.getMilliseconds()).padStart(3, "0");
 
-  let timeString = `${hours}:${minutes}:${seconds}.${millis}`;
 
-  if (typeof message === "undefined") {
-    log(`Log message from line ${p}${lineNum}${reset} is not defined`, "E");
-    return;
-  } else if (typeof message !== "string") {
-    log(`Log message from line ${p}${lineNum}${reset} is not a string so attemping to stringify`, "A");
-    try {
-      message = JSON.stringify(message, null, 4);
-    } catch (e) {
-      log(`Log message from line ${p}${lineNum}${reset} could not be converted to string`, "E");
-    }
-  }
 
-  if (debugLineNum == false || debugLineNum == "false") {
-    lineNum = "";
-  }
-
-  message = message.replace(/true/g, g+"true"+w);
-  message = message.replace(/false/g, r+"false"+w);
-  message = message.replace(/null/g, y+"null"+w);
-  message = message.replace(/undefined/g, y+"undefined"+w);
-
-  //const regexp = / \((.*?):(.[0-9]*):(.[0-9]*)\)"/g;
-  //let matches = message.matchAll(regexp);
-  //for (let match of matches) {
-    //message = message.replace(match[0],`" [${y}${match[1]}${reset}] ${p}(${match[2]}:${match[3]})${reset}`);
-  //}
-
-  let msg;
-  switch (level) {
-    case "A":
-      if (loggingLevel == "A") { //White
-        logSend(`[${timeString}]${w}  INFO: ${dim}${message}${bright} ${p}${lineNum}${reset}`);
-      }
-      break;
-    case "D":
-      if (loggingLevel == "A" || loggingLevel == "D") { //Cyan
-        logSend(`[${timeString}]${c} DEBUG: ${w}${message} ${p}${lineNum}${reset}`);
-      }
-      break;
-    case "W":
-      if (loggingLevel != "E") { //Yellow
-        logSend(`[${timeString}]${y}  WARN: ${w}${message} ${p}${lineNum}${reset}`);
-      }
-      break;
-    case "E": //Red
-      logSend(`[${timeString}]${r} ERROR: ${w}${message} ${p}${lineNum}${reset}`);
-      break;
-    case "S": //Blue
-      logSend(`[${timeString}]${b} NETWK: ${w}${message} ${p}${lineNum}${reset}`);
-      break;
-    default: //Green
-      logSend(`[${timeString}]${g}  CORE: ${w}${message} ${p}${lineNum}${reset}`);
-  }
+function makeHeader(intType = type, intVersion = version) {
+	let header = {};
+	header.fromID = serverID;
+	header.timestamp = new Date().getTime();
+	header.version = intVersion;
+	header.type = intType;
+	header.active = true;
+	header.messageID = header.timestamp;
+	header.recipients = [
+		config.get('host')
+	];
+	return header;
 }
 
-function logObj(message, obj, level) {
-  let e = new Error();
-  let stack = e.stack.toString().split(/\r\n|\n/);
-  let filename = path.basename(__filename)+":";
-  let lineNum = '('+stack[2].substr(stack[2].indexOf(filename)+filename.length);
-
-  let combined = `${message}: ${JSON.stringify(obj, null, 4)}`;
-  log(combined, level, lineNum);
-}
-
-function logSend(message) {
-  logFile(message);
-  console.log(message);
-}
-
-function logFile(msg, sync = false) {
-  if (createLogFile) {
-    let dir = `${configLocation}/logs`;
-
-    if (!fs.existsSync(dir)){
-      fs.mkdirSync(dir, { recursive: true });
-    }
-
-    let today = new Date();
-    let dd = String(today.getDate()).padStart(2, '0');
-    let mm = String(today.getMonth() + 1).padStart(2, '0');
-    let yyyy = today.getFullYear();
-
-    let fileName = `${dir}/voteServer-[${yyyy}-${mm}-${dd}].log`;
-    //let data = msg.replaceAll(r, "").replaceAll(g, "").replaceAll(y, "").replaceAll(b, "").replaceAll(p, "").replaceAll(c, "").replaceAll(w, "").replaceAll(reset, "").replaceAll(dim, "").replaceAll(bright, "")+"\n";
-    let data = msg;
-
-    if (sync) {
-      try {
-        fs.appendFileSync(fileName, data);
-      } catch (error) {
-        createLogFile = false;
-        log("Could not write to log file, permissions?", "E");
-      }
-    } else {
-      fs.appendFile(fileName, data, err => {
-        if (err) {
-          createLogFile = false;
-          log("Could not write to log file, permissions?", "E");
-        }
-      });
-    }
-  }
+function sendData(connection, payload) {
+	let packet = {};
+	let header = makeHeader();
+	packet.header = header;
+	packet.payload = payload;
+	connection.send(JSON.stringify(packet));
 }
