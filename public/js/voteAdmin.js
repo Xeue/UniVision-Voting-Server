@@ -87,11 +87,9 @@ function getUni(PK) {
 }
 
 function renderTotal(totals) {
-	for (var act in uni) {
-		if (uni.hasOwnProperty(act)) {
-			pubVotes[act] = 0;
-		}
-	}
+	uni.forEach(act => {
+		pubVotes[act.PK] = 0;
+	})
 	$cont = $("#vAdmin_totals");
 	$cont.html("");
 	for (var variable in totals) {
@@ -155,17 +153,15 @@ function renderTotal(totals) {
 }
 
 function renderTotals(totals) {
-	for (var act in uni) {
-		if (uni.hasOwnProperty(act)) {
-			$("#pubTot" + act).html(pubVotes[act]);
-			if (judgeTots[act] == undefined) {
-				judgeTots[act] = 0;
-			}
-			$("#allTot" + act).html(pubVotes[act] + judgeTots[act]);
-			$("#pubVot" + act).html(parseInt(totals[act]));
-			$("#pubTot" + act).parent().data("points", pubVotes[act]);
+	uni.forEach(act => {
+		$("#pubTot" + act.PK).html(pubVotes[act.PK]);
+		if (judgeTots[act.PK] == undefined) {
+			judgeTots[act.PK] = 0;
 		}
-	}
+		$("#allTot" + act.PK).html(pubVotes[act.PK] + judgeTots[act.PK]);
+		$("#pubVot" + act.PK).html(parseInt(totals[act.PK]));
+		$("#pubTot" + act.PK).parent().data("points", pubVotes[act.PK]);
+	})
 	sortTables();
 }
 
