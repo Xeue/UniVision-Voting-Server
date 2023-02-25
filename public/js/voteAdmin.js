@@ -393,8 +393,8 @@ function socketDoMessage(header, data) {
 		uni.forEach(act => {
 			let $tr = $("<tr></tr>");
 			let $pubName = $(`<td>${act.short}  -  ${act.act}</td>`);
-			let $pubVot = $(`<td id="pubVot${act.order}"></td>`);
-			let $pubTot = $(`<td id="pubTot${act.order}"></td>`);
+			let $pubVot = $(`<td id="pubVot${act.PK}"></td>`);
+			let $pubTot = $(`<td id="pubTot${act.PK}"></td>`);
 			$tr.append($pubName);
 			$tr.append($pubTot);
 			$tr.append($pubVot);
@@ -402,14 +402,14 @@ function socketDoMessage(header, data) {
 
 			let $jtr = $("<tr></tr>");
 			let $jpubName = $(`<td>${act.short}  -  ${act.act}</td>`);
-			let $jpubTot = $(`<td id="judgeTot${act.order}"></td>`);
+			let $jpubTot = $(`<td id="judgeTot${act.PK}"></td>`);
 			$jtr.append($jpubName);
 			$jtr.append($jpubTot);
 			$("#judgeTotalsCont").append($jtr);
 
 			let $atr = $("<tr></tr>");
 			let $apubName = $(`<td>${act.short}  -  ${act.act}</td>`);
-			let $apubTot = $(`<td id="allTot${act.order}"></td>`);
+			let $apubTot = $(`<td id="allTot${act.PK}"></td>`);
 			$atr.append($apubName);
 			$atr.append($apubTot);
 			$("#allTotalsCont").append($atr);
