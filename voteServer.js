@@ -620,7 +620,7 @@ async function updateVoteAdmin(PK) {
 }
 
 async function verifyEmail(PK) {
-  if (!config.get('emailEnalbed')) return;
+  if (!config.get('emailEnabled')) return;
   const votes = await SQL.query(`SELECT * FROM \`main_votes\` WHERE \`PK\`='${PK}';`);
 
   const mailOptions = {
