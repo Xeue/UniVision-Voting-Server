@@ -448,6 +448,8 @@ async function commandAdmin(msgObj, socket) {
       let min = d.getMinutes();
       await SQL.query(`ALTER TABLE \`main_votes\` RENAME TO \`old_votes_${day}-${hr}-${min}\`;`);
       await SQL.query("CREATE TABLE `main_votes` (`PK` int(11) NOT NULL,`act` int(11) DEFAULT NULL,`fromUni` int(11) NOT NULL,`code` varchar(256) DEFAULT NULL,`email` varchar(256) NOT NULL,`verificationCode` varchar(256) DEFAULT NULL,`IP` varchar(256) NOT NULL,`enabled` tinyint(1) NOT NULL DEFAULT '1',`verified` tinyint(1) NOT NULL DEFAULT '0',`dateVote` timestamp NULL DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=latin1;");
+      await SQL.query(`ALTER TABLE \`main_votes\` ADD PRIMARY KEY (\`PK\`);`)
+      await SQL.query(`ALTER TABLE \`main_votes\` MODIFY \`PK\` int(11) NOT NULL AUTO_INCREMENT;`);
       sendAll(`{"type":"adminReset"}`);
       break;
     default:
