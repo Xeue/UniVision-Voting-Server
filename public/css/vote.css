@@ -176,5 +176,13 @@
 
 .fromUni {
 	padding-bottom: 50px;
-	padding-top: 20px
+	padding-top: 20px;
+	font-size: 140%;
+}
+
+#vote_cUniCont {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 1rem;
 }
