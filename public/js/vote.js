@@ -70,7 +70,7 @@ $(document).ready(function () {
 		if ($target.hasClass('vote_choose_uni')) {
 			selectedUni = $target.attr("id").replace("vote_chUni_", "");
 			$('#vote_' + selectedUni).remove();
-			Cookies.set('university', selectedUni, {
+			Cookies.set('university2', selectedUni, {
 				secure: true,
 				SameSite: 'Lax'
 			});
@@ -145,7 +145,7 @@ function socketDoMessage(header, payload) {
 		$("#vote_already").removeClass("hidden_right");
 	} else if (payload.type == "voteStatus") {
 		if (payload.status == "OPEN") {
-			selectedUni = Cookies.get('university');
+			selectedUni = Cookies.get('university2s');
 			if (selectedUni !== undefined) {
 				selectUni(selectedUni);
 			} else {
