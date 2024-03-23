@@ -4,7 +4,7 @@ function buildVotes(uniObj) {
 	$('#vote_cUniCont').html("");
 	$('#vote_row').html("");
 	uniObj.forEach(uni => {
-		let $cont = $(`<div class="vote_act" style="background-image:url(${uni.actImage});"></div>`);
+		let $cont = $(`<div class="vote_act" style="background-image:url(${uni.actImage}); order: ${uni.PK};"></div>`);
 		$cont.prop("id", "vote_" + uni.PK);
 		let $bttn = $('<button class="vote_submit" type="button">Place Vote</button>');
 		let $lbl = $('<div class="vote_act_text"></div>');

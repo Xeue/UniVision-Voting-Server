@@ -1,6 +1,6 @@
 {
   "name": "voting-node",
-  "version": "3.3.8",
+  "version": "3.3.9",
   "description": "The server application for for Sam Chilton's UniVision voting system",
   "main": "voteServer.js",
   "scripts": {
