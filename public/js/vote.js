@@ -14,7 +14,7 @@ function buildVotes(uniObj) {
 		$('#vote_row').append($cont);
 		let $uniImg = $('<img>');
 		$uniImg.prop("src", uni.logo);
-		let $uniBttn = $("<button type='button' class='vote_choose_uni' style='"+uni.PK+"' id='vote_chUni_" + uni.PK + "'></button>");
+		let $uniBttn = $("<button type='button' class='vote_choose_uni' style='order: "+uni.PK+"' id='vote_chUni_" + uni.PK + "'></button>");
 		$uniBttn.append($uniImg);
 		$('#vote_cUniCont').append($uniBttn);
 	})
